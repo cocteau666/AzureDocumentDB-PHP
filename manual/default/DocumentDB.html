@@ -1,0 +1,1198 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class DocumentDB</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name">Class DocumentDB</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+															<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+					</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+		<p class="notes">
+			Located in <a class="field" href="_phpdocumentdb.php.html">/phpdocumentdb.php</a> (line <span class="field">73</span>)
+		</p>
+		
+				
+		<pre></pre>
+	
+			</div>
+</div>
+
+
+
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+												<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																																																																																																																																																																																																																																				
+												<div class="method-definition">
+											<span class="method-result">DocumentDB</span>
+										<a href="#__construct" title="details" class="method-name">__construct</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$host</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$master_key</span>, [<span class="var-type">bool</span>&nbsp;<span class="var-name">$debug</span> = <span class="var-default">false</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#createAttachment" title="details" class="method-name">createAttachment</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_col</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_doc</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$content_type</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$filename</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$file</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#createCollection" title="details" class="method-name">createCollection</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$json</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#createDatabase" title="details" class="method-name">createDatabase</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$json</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#createDocument" title="details" class="method-name">createDocument</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_col</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$json</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#createUser" title="details" class="method-name">createUser</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$json</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#deleteAttachment" title="details" class="method-name">deleteAttachment</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_col</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_doc</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_at</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#deleteCollection" title="details" class="method-name">deleteCollection</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_col</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#deleteDatabase" title="details" class="method-name">deleteDatabase</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#deleteDocument" title="details" class="method-name">deleteDocument</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_col</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_doc</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#deleteUser" title="details" class="method-name">deleteUser</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_user</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#getAttachment" title="details" class="method-name">getAttachment</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_col</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_doc</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_at</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#getCollection" title="details" class="method-name">getCollection</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_col</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#getDatabase" title="details" class="method-name">getDatabase</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#getDocument" title="details" class="method-name">getDocument</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_col</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_doc</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#getInfo" title="details" class="method-name">getInfo</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#getUser" title="details" class="method-name">getUser</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_user</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#listAttachments" title="details" class="method-name">listAttachments</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$rid_col</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_doc</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_colResource</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#listCollections" title="details" class="method-name">listCollections</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#listDatabases" title="details" class="method-name">listDatabases</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#listDocuments" title="details" class="method-name">listDocuments</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$rid_col</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_colResource</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#listUsers" title="details" class="method-name">listUsers</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#query" title="details" class="method-name">query</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_col</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$query</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#replaceAttachment" title="details" class="method-name">replaceAttachment</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_col</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_doc</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_at</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$content_type</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$filename</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$file</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#replaceDatabase" title="details" class="method-name">replaceDatabase</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$json</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#replaceDocument" title="details" class="method-name">replaceDocument</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_col</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_doc</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$json</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#replaceUser" title="details" class="method-name">replaceUser</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_user</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$json</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result"><a href="../default/DocumentDBDatabase.html">DocumentDBDatabase</a></span>
+										<a href="#selectDB" title="details" class="method-name">selectDB</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$db_name</span>)
+									</div>
+								</div>
+		</div>
+	</div>		
+
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+																<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">87</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">__construct</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">DocumentDB</span>
+		<span class="method-name">
+			__construct
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$host</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$master_key</span>, [<span class="var-type">bool</span>&nbsp;<span class="var-name">$debug</span> = <span class="var-default">false</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$host</span><span class="var-description">: URI of Key</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$master_key</span><span class="var-description">: Primary or Secondary key</span>			</li>
+					<li>
+				<span class="var-type">bool</span>
+				<span class="var-name">$debug</span><span class="var-description">: true: return Response Headers and JSON(if you need), false(default): return JSON only</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodcreateAttachment" id="createAttachment"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">createAttachment</span> (line <span class="line-number">663</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">createAttachment</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> JSON response</li>
+				<li><span class="field">link:</span> <a href="http://msdn.microsoft.com/en-us/library/azure/dn803933.aspx">http://msdn.microsoft.com/en-us/library/azure/dn803933.aspx</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			createAttachment
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_col</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_doc</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$content_type</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$filename</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$file</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_id</span><span class="var-description">: Resource ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_col</span><span class="var-description">: Resource Collection ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_doc</span><span class="var-description">: Resource Doc ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$content_type</span><span class="var-description">: Content-Type of Media</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$filename</span><span class="var-description">: Attachement file name</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$file</span><span class="var-description">: URL encoded Attachement file (Raw Media)</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodcreateCollection" id="createCollection"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">createCollection</span> (line <span class="line-number">468</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">createCollection</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> JSON response</li>
+				<li><span class="field">link:</span> <a href="http://msdn.microsoft.com/en-us/library/azure/dn803934.aspx">http://msdn.microsoft.com/en-us/library/azure/dn803934.aspx</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			createCollection
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$json</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_id</span><span class="var-description">: Resource ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$json</span><span class="var-description">: JSON request</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodcreateDatabase" id="createDatabase"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">createDatabase</span> (line <span class="line-number">266</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">createDatabase</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> JSON response</li>
+				<li><span class="field">link:</span> <a href="http://msdn.microsoft.com/en-us/library/azure/dn803954.aspx">http://msdn.microsoft.com/en-us/library/azure/dn803954.aspx</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			createDatabase
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$json</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$json</span><span class="var-description">: JSON request</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodcreateDocument" id="createDocument"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">createDocument</span> (line <span class="line-number">551</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">createDocument</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> JSON response</li>
+				<li><span class="field">link:</span> <a href="http://msdn.microsoft.com/en-us/library/azure/dn803948.aspx">http://msdn.microsoft.com/en-us/library/azure/dn803948.aspx</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			createDocument
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_col</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$json</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_id</span><span class="var-description">: Resource ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_col</span><span class="var-description">: Resource Collection ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$json</span><span class="var-description">: JSON request</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodcreateUser" id="createUser"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">createUser</span> (line <span class="line-number">366</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">createUser</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> JSON response</li>
+				<li><span class="field">link:</span> <a href="http://msdn.microsoft.com/en-us/library/azure/dn803946.aspx">http://msdn.microsoft.com/en-us/library/azure/dn803946.aspx</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			createUser
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$json</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_id</span><span class="var-description">: Resource ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$json</span><span class="var-description">: JSON request</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methoddeleteAttachment" id="deleteAttachment"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">deleteAttachment</span> (line <span class="line-number">716</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">deleteAttachment</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> JSON response</li>
+				<li><span class="field">link:</span> <a href="http://">http://</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			deleteAttachment
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_col</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_doc</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_at</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_id</span><span class="var-description">: Resource ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_col</span><span class="var-description">: Resource Collection ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_doc</span><span class="var-description">: Resource Doc ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_at</span><span class="var-description">: Resource Attachment ID</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methoddeleteCollection" id="deleteCollection"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">deleteCollection</span> (line <span class="line-number">489</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">deleteCollection</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> JSON response</li>
+				<li><span class="field">link:</span> <a href="http://msdn.microsoft.com/en-us/library/azure/dn803953.aspx">http://msdn.microsoft.com/en-us/library/azure/dn803953.aspx</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			deleteCollection
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_col</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_id</span><span class="var-description">: Resource ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_col</span><span class="var-description">: Resource Collection ID</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methoddeleteDatabase" id="deleteDatabase"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">deleteDatabase</span> (line <span class="line-number">307</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">deleteDatabase</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> JSON response</li>
+				<li><span class="field">link:</span> <a href="http://msdn.microsoft.com/en-us/library/azure/dn803942.aspx">http://msdn.microsoft.com/en-us/library/azure/dn803942.aspx</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			deleteDatabase
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_id</span><span class="var-description">: Resource ID</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methoddeleteDocument" id="deleteDocument"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">deleteDocument</span> (line <span class="line-number">596</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">deleteDocument</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> JSON response</li>
+				<li><span class="field">link:</span> <a href="http://msdn.microsoft.com/en-us/library/azure/dn803952.aspx">http://msdn.microsoft.com/en-us/library/azure/dn803952.aspx</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			deleteDocument
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_col</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_doc</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_id</span><span class="var-description">: Resource ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_col</span><span class="var-description">: Resource Collection ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_doc</span><span class="var-description">: Resource Doc ID</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methoddeleteUser" id="deleteUser"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">deleteUser</span> (line <span class="line-number">409</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">deleteUser</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> JSON response</li>
+				<li><span class="field">link:</span> <a href="http://msdn.microsoft.com/en-us/library/azure/dn803953.aspx">http://msdn.microsoft.com/en-us/library/azure/dn803953.aspx</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			deleteUser
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_user</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_id</span><span class="var-description">: Resource ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_user</span><span class="var-description">: Resource User ID</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetAttachment" id="getAttachment"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getAttachment</span> (line <span class="line-number">639</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">getAttachment</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> JSON response</li>
+				<li><span class="field">link:</span> <a href="http://">http://</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			getAttachment
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_col</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_doc</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_at</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_id</span><span class="var-description">: Resource ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_col</span><span class="var-description">: Resource Collection ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_doc</span><span class="var-description">: Resource Doc ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_at</span><span class="var-description">: Resource Attachment ID</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetCollection" id="getCollection"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getCollection</span> (line <span class="line-number">448</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">getCollection</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> JSON response</li>
+				<li><span class="field">link:</span> <a href="http://msdn.microsoft.com/en-us/library/azure/dn803951.aspx">http://msdn.microsoft.com/en-us/library/azure/dn803951.aspx</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			getCollection
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_col</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_id</span><span class="var-description">: Resource ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_col</span><span class="var-description">: Resource Collection ID</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetDatabase" id="getDatabase"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getDatabase</span> (line <span class="line-number">247</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">getDatabase</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> JSON response</li>
+				<li><span class="field">link:</span> <a href="http://msdn.microsoft.com/en-us/library/azure/dn803937.aspx">http://msdn.microsoft.com/en-us/library/azure/dn803937.aspx</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			getDatabase
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_id</span><span class="var-description">: Resource ID</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetDocument" id="getDocument"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getDocument</span> (line <span class="line-number">530</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">getDocument</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> JSON response</li>
+				<li><span class="field">link:</span> <a href="http://msdn.microsoft.com/en-us/library/azure/dn803957.aspx">http://msdn.microsoft.com/en-us/library/azure/dn803957.aspx</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			getDocument
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_col</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_doc</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_id</span><span class="var-description">: Resource ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_col</span><span class="var-description">: Resource Collection ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_doc</span><span class="var-description">: Resource Doc ID</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetInfo" id="getInfo"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getInfo</span> (line <span class="line-number">186</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">getInfo</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> JSON response</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			getInfo
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetUser" id="getUser"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getUser</span> (line <span class="line-number">346</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">getUser</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> JSON response</li>
+				<li><span class="field">link:</span> <a href="http://msdn.microsoft.com/en-us/library/azure/dn803949.aspx">http://msdn.microsoft.com/en-us/library/azure/dn803949.aspx</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			getUser
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_user</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_id</span><span class="var-description">: Resource ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_user</span><span class="var-description">: Resource User ID</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodlistAttachments" id="listAttachments"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">listAttachments</span> (line <span class="line-number">617</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">listAttachments</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> JSON response</li>
+				<li><span class="field">link:</span> <a href="http://">http://</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			listAttachments
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$rid_col</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_doc</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_colResource</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_id</span><span class="var-description">: Resource ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_colResource</span><span class="var-description">: Collection ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_doc</span><span class="var-description">: Resource Doc ID</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$rid_col</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodlistCollections" id="listCollections"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">listCollections</span> (line <span class="line-number">428</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">listCollections</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> JSON response</li>
+				<li><span class="field">link:</span> <a href="http://msdn.microsoft.com/en-us/library/azure/dn803935.aspx">http://msdn.microsoft.com/en-us/library/azure/dn803935.aspx</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			listCollections
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_id</span><span class="var-description">: Resource ID</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodlistDatabases" id="listDatabases"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">listDatabases</span> (line <span class="line-number">228</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">listDatabases</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> JSON response</li>
+				<li><span class="field">link:</span> <a href="http://msdn.microsoft.com/en-us/library/azure/dn803945.aspx">http://msdn.microsoft.com/en-us/library/azure/dn803945.aspx</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			listDatabases
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodlistDocuments" id="listDocuments"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">listDocuments</span> (line <span class="line-number">509</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">listDocuments</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> JSON response</li>
+				<li><span class="field">link:</span> <a href="http://msdn.microsoft.com/en-us/library/azure/dn803955.aspx">http://msdn.microsoft.com/en-us/library/azure/dn803955.aspx</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			listDocuments
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$rid_col</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_colResource</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_id</span><span class="var-description">: Resource ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_colResource</span><span class="var-description">: Collection ID</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$rid_col</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodlistUsers" id="listUsers"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">listUsers</span> (line <span class="line-number">326</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">listUsers</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> JSON response</li>
+				<li><span class="field">link:</span> <a href="http://msdn.microsoft.com/en-us/library/azure/dn803958.aspx">http://msdn.microsoft.com/en-us/library/azure/dn803958.aspx</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			listUsers
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_id</span><span class="var-description">: Resource ID</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodquery" id="query"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">query</span> (line <span class="line-number">207</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">query</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> JSON response</li>
+				<li><span class="field">link:</span> <a href="http://msdn.microsoft.com/en-us/library/azure/dn783363.aspx">http://msdn.microsoft.com/en-us/library/azure/dn783363.aspx</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			query
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_col</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$query</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_id</span><span class="var-description">: Resource ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_col</span><span class="var-description">: Resource Collection ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$query</span><span class="var-description">: Query</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodreplaceAttachment" id="replaceAttachment"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">replaceAttachment</span> (line <span class="line-number">691</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">replaceAttachment</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> JSON response</li>
+				<li><span class="field">link:</span> <a href="http://">http://</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			replaceAttachment
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_col</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_doc</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_at</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$content_type</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$filename</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$file</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_id</span><span class="var-description">: Resource ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_col</span><span class="var-description">: Resource Collection ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_doc</span><span class="var-description">: Resource Doc ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_at</span><span class="var-description">: Resource Attachment ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$content_type</span><span class="var-description">: Content-Type of Media</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$filename</span><span class="var-description">: Attachement file name</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$file</span><span class="var-description">: URL encoded Attachement file (Raw Media)</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodreplaceDatabase" id="replaceDatabase"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">replaceDatabase</span> (line <span class="line-number">287</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">replaceDatabase</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> JSON response</li>
+				<li><span class="field">link:</span> <a href="http://msdn.microsoft.com/en-us/library/azure/dn803943.aspx">http://msdn.microsoft.com/en-us/library/azure/dn803943.aspx</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			replaceDatabase
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$json</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_id</span><span class="var-description">: Resource ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$json</span><span class="var-description">: JSON request</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodreplaceDocument" id="replaceDocument"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">replaceDocument</span> (line <span class="line-number">574</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">replaceDocument</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> JSON response</li>
+				<li><span class="field">link:</span> <a href="http://msdn.microsoft.com/en-us/library/azure/dn803947.aspx">http://msdn.microsoft.com/en-us/library/azure/dn803947.aspx</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			replaceDocument
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_col</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_doc</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$json</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_id</span><span class="var-description">: Resource ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_col</span><span class="var-description">: Resource Collection ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_doc</span><span class="var-description">: Resource Doc ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$json</span><span class="var-description">: JSON request</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodreplaceUser" id="replaceUser"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">replaceUser</span> (line <span class="line-number">388</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">replaceUser</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> JSON response</li>
+				<li><span class="field">link:</span> <a href="http://msdn.microsoft.com/en-us/library/azure/dn803941.aspx">http://msdn.microsoft.com/en-us/library/azure/dn803941.aspx</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			replaceUser
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$rid_id</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$rid_user</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$json</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_id</span><span class="var-description">: Resource ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$rid_user</span><span class="var-description">: Resource User ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$json</span><span class="var-description">: JSON request</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodselectDB" id="selectDB"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">selectDB</span> (line <span class="line-number">159</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">selectDB</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> class</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../default/DocumentDBDatabase.html">DocumentDBDatabase</a></span>
+		<span class="method-name">
+			selectDB
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$db_name</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$db_name</span><span class="var-description">: Database name</span>			</li>
+				</ul>
+		
+			
+	</div>
+						
+		</div>
+	</div>
+
+
+	<p class="notes" id="credit">
+		Documentation generated on Tue, 09 Dec 2014 12:57:12 +0900 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.4</a>
+	</p>
+	</div></body>
+</html>
