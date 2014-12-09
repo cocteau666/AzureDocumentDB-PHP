@@ -1,7 +1,8 @@
 AzureDocumentDB-PHP
 ===================
 
-Azure DocumentDB REST API Wrapper for PHP.
+Azure DocumentDB REST API Wrapper for PHP.  
+cURL function needed.
 
 Sample
 ===================
