@@ -27,5 +27,5 @@ Sample
     $json = $col->query("SELECT * FROM col_test");
     
     // Debug
-    $object = json_encode($json);
+    $object = json_decode($json);
     var_dump($object);
