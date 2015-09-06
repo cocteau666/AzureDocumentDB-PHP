@@ -82,7 +82,7 @@ class DocumentDBCollection
 
   public function query($query)
   {
-    return $this->document_db->query($this->rid_db, $this->rid_col);
+    return $this->document_db->query($this->rid_db, $this->rid_col, $query);
   }
 
 }
