@@ -82,7 +82,7 @@ class DocumentDBCollection
 
   public function query($query)
   {
-    return $this->document_db->query($this->rid_db, $this->rid_col);
+    return $this->document_db->query($this->rid_db, $this->rid_col, $query);
   }
 
 }
@@ -123,7 +123,7 @@ class DocumentDB
     $x_ms_date = gmdate('D, d M Y H:i:s T', strtotime('+2 minutes'));
     $master = 'master';
     $token = '1.0';
-    $x_ms_version = '2014-08-21';
+    $x_ms_version = '2015-04-08';
 
     $key = base64_decode($this->master_key);
     $string_to_sign = $verb . "\n" .
@@ -136,11 +136,11 @@ class DocumentDB
 
     return Array(
              'Accept: application/json',
-             'User-Agent: documentdb-php-sdk-0.1.0',
+             'User-Agent: documentdb.php.sdk/1.0.0',
              'Cache-Control: no-cache',
              'x-ms-date: ' . $x_ms_date,
              'x-ms-version: ' . $x_ms_version,
-             'authorization: ' . "type%3D" . $master . "%26ver%3D" . $token . "%26sig%3D" . rawurlencode($sig)
+             'authorization: ' . urlencode("type=$master&ver=$token&sig=$sig")
            );
   }
 
@@ -160,9 +160,15 @@ class DocumentDB
     curl_setopt($curl, CURLOPT_HEADER, $this->debug);
     curl_setopt($curl, CURLOPT_SSLVERSION, 1);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_VERBOSE, $this->debug);
+
+    ($this->debug) ?
+    	print "[[Debug: \nReq: ".curl_getinfo($curl, CURLINFO_HEADER_OUT) : $t=1;
+
     curl_setopt_array($curl, $options);
     $result = curl_exec($curl);
     curl_close($curl);
+    ($this->debug) ? print "\nRes: $result]]\n" : $t=1;
     return $result;
   }
 
