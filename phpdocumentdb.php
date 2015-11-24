@@ -30,7 +30,7 @@
 class DocumentDBDatabase
 {
   private $document_db;
-  private $rid_db;
+  public $rid_db;
 
   public function __construct($document_db, $rid_db)
   {
@@ -70,8 +70,8 @@ class DocumentDBDatabase
 class DocumentDBCollection
 {
   private $document_db;
-  private $rid_db;
-  private $rid_col;
+  public $rid_db;
+  public $rid_col;
 
   public function __construct($document_db, $rid_db, $rid_col)
   {
@@ -123,7 +123,7 @@ class DocumentDB
     $x_ms_date = gmdate('D, d M Y H:i:s T', strtotime('+2 minutes'));
     $master = 'master';
     $token = '1.0';
-    $x_ms_version = '2015-04-08';
+    $x_ms_version = '2015-08-06';
 
     $key = base64_decode($this->master_key);
     $string_to_sign = $verb . "\n" .
@@ -161,11 +161,11 @@ class DocumentDB
     curl_setopt($curl, CURLOPT_SSLVERSION, 1);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($curl, CURLOPT_VERBOSE, $this->debug);
+    curl_setopt_array($curl, $options);
 
     ($this->debug) ?
-    	print "[[Debug: \nReq: ".curl_getinfo($curl, CURLINFO_HEADER_OUT) : $t=1;
+    	print "[[Debug: \nReq: ".curl_getinfo($curl, CURLINFO_HEADER_OUT)." ]]" : $t=1;
 
-    curl_setopt_array($curl, $options);
     $result = curl_exec($curl);
     curl_close($curl);
     ($this->debug) ? print "\nRes: $result]]\n" : $t=1;
