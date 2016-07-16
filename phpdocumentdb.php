@@ -49,11 +49,18 @@ class DocumentDBDatabase
     $rid_col = false;
     $object = json_decode($this->document_db->listCollections($this->rid_db));
     $col_list = $object->DocumentCollections;
+    for ($i=0; $i<count($col_list); $i++) {
+      if ($col_list[$i]->id === $col_name) {
+        $rid_col = $col_list[$i]->_rid;
+      }
+    }
+    /*
     foreach ($col_list as $value) {
       if ($value->id === $col_name) {
         $rid_col = $value->_rid;
       }
     }
+    */
     if (!$rid_col) {
       $object = json_decode($this->document_db->createCollection($this->rid_db, '{"id":"' . $col_name . '"}'));
       $rid_col = $object->_rid;
@@ -184,11 +191,18 @@ class DocumentDB
     $rid_db = false;
     $object = json_decode($this->listDatabases());
     $db_list = $object->Databases;
+    for ($i=0; $i<count($db_list); $i++) {
+      if ($db_list[$i]->id === $db_name) {
+        $rid_db = $db_list[$i]->_rid;
+      }
+    }
+    /*
     foreach ($db_list as $value) {
       if ($value->id === $db_name) {
         $rid_db = $value->_rid;
       }
     }
+    */
     if (!$rid_db) {
       $object = json_decode($this->createDatabase('{"id":"' . $db_name . '"}'));
       $rid_db = $object->_rid;
