@@ -22,6 +22,10 @@ Sample
     
     // select Collection or create
     $col = $db->selectCollection("col_test");
+
+    // store JSON document
+    $data = '{"FirstName": "Paul","LastName": "Smith"}';
+    $result = $col->createDocument($data);
     
     // run query
     $json = $col->query("SELECT * FROM col_test");

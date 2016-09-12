@@ -22,7 +22,7 @@
  * Wrapper class of Document DB REST API
  *
  * @link http://msdn.microsoft.com/en-us/library/azure/dn781481.aspx
- * @version 1.0
+ * @version 1.1
  * @author Takeshi SAKURAI <sakurai@pnop.co.jp>
  * @since PHP 5.3
  */
@@ -54,13 +54,6 @@ class DocumentDBDatabase
         $rid_col = $col_list[$i]->_rid;
       }
     }
-    /*
-    foreach ($col_list as $value) {
-      if ($value->id === $col_name) {
-        $rid_col = $value->_rid;
-      }
-    }
-    */
     if (!$rid_col) {
       $object = json_decode($this->document_db->createCollection($this->rid_db, '{"id":"' . $col_name . '"}'));
       $rid_col = $object->_rid;
@@ -80,6 +73,14 @@ class DocumentDBCollection
   private $rid_db;
   private $rid_col;
 
+  /**
+   * __construct
+   *
+   * @access public
+   * @param DocumentDB $document_db DocumentDB object
+   * @param string $rid_db Database ID
+   * @param string $rid_col Collection ID
+   */
   public function __construct($document_db, $rid_db, $rid_col)
   {
     $this->document_db = $document_db;
@@ -87,11 +88,28 @@ class DocumentDBCollection
     $this->rid_col     = $rid_col;
   }
 
+  /**
+   * query
+   * @access public
+   * @param string $query Query
+   * @return string JSON strings
+   */
   public function query($query)
   {
     return $this->document_db->query($this->rid_db, $this->rid_col, $query);
   }
 
+  /**
+   * createDocument
+   *
+   * @access public
+   * @param string $json JSON formatted document
+   * @return string JSON strings
+   */
+  public function createDocument($json)
+  {
+    return $this->document_db->createDocument($this->rid_db, $this->rid_col, $json);
+  }
 }
 
 class DocumentDB
@@ -130,7 +148,7 @@ class DocumentDB
     $x_ms_date = gmdate('D, d M Y H:i:s T', strtotime('+2 minutes'));
     $master = 'master';
     $token = '1.0';
-    $x_ms_version = '2015-04-08';
+    $x_ms_version = '2015-12-16';
 
     $key = base64_decode($this->master_key);
     $string_to_sign = $verb . "\n" .
@@ -196,13 +214,6 @@ class DocumentDB
         $rid_db = $db_list[$i]->_rid;
       }
     }
-    /*
-    foreach ($db_list as $value) {
-      if ($value->id === $db_name) {
-        $rid_db = $value->_rid;
-      }
-    }
-    */
     if (!$rid_db) {
       $object = json_decode($this->createDatabase('{"id":"' . $db_name . '"}'));
       $rid_db = $object->_rid;
