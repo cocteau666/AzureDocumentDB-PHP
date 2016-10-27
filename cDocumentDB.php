@@ -22,7 +22,7 @@
  * Wrapper class of Document DB REST API
  *
  * @link http://msdn.microsoft.com/en-us/library/azure/dn781481.aspx
- * @version 1.1
+ * @version 1.0
  * @author Takeshi SAKURAI <sakurai@pnop.co.jp>
  * @since PHP 5.3
  */
@@ -49,9 +49,9 @@ class DocumentDBDatabase
     $rid_col = false;
     $object = json_decode($this->document_db->listCollections($this->rid_db));
     $col_list = $object->DocumentCollections;
-    for ($i=0; $i<count($col_list); $i++) {
-      if ($col_list[$i]->id === $col_name) {
-        $rid_col = $col_list[$i]->_rid;
+    foreach ($col_list as $value) {
+      if ($value->id === $col_name) {
+        $rid_col = $value->_rid;
       }
     }
     if (!$rid_col) {
@@ -73,14 +73,6 @@ class DocumentDBCollection
   public $rid_db;
   public $rid_col;
 
-  /**
-   * __construct
-   *
-   * @access public
-   * @param DocumentDB $document_db DocumentDB object
-   * @param string $rid_db Database ID
-   * @param string $rid_col Collection ID
-   */
   public function __construct($document_db, $rid_db, $rid_col)
   {
     $this->document_db = $document_db;
@@ -88,28 +80,11 @@ class DocumentDBCollection
     $this->rid_col     = $rid_col;
   }
 
-  /**
-   * query
-   * @access public
-   * @param string $query Query
-   * @return string JSON strings
-   */
   public function query($query)
   {
     return $this->document_db->query($this->rid_db, $this->rid_col, $query);
   }
 
-  /**
-   * createDocument
-   *
-   * @access public
-   * @param string $json JSON formatted document
-   * @return string JSON strings
-   */
-  public function createDocument($json)
-  {
-    return $this->document_db->createDocument($this->rid_db, $this->rid_col, $json);
-  }
 }
 
 class DocumentDB
@@ -186,14 +161,20 @@ class DocumentDB
     curl_setopt($curl, CURLOPT_SSLVERSION, 1);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($curl, CURLOPT_VERBOSE, $this->debug);
+    curl_setopt($curl, CURLOPT_CONNECTTIMEOUT ,0);
+    curl_setopt($curl, CURLOPT_TIMEOUT, 6000);
     curl_setopt_array($curl, $options);
 
-    ($this->debug) ?
-    	print "[[Debug: \nReq: ".curl_getinfo($curl, CURLINFO_HEADER_OUT)." ]]" : $t=1;
+    if ($this->debug) {
+    		print "[[Debug: \nReq: ";
+		curl_getinfo($curl, CURLINFO_HEADER_OUT);
+		print "\ngubeD]]";
+    }
 
     $result = curl_exec($curl);
     curl_close($curl);
-    ($this->debug) ? print "\nRes: $result]]\n" : $t=1;
+    ($this->debug) ? print "[[Res:\n $result\n]]\n" : $t=1;
+
     return $result;
   }
 
@@ -209,9 +190,9 @@ class DocumentDB
     $rid_db = false;
     $object = json_decode($this->listDatabases());
     $db_list = $object->Databases;
-    for ($i=0; $i<count($db_list); $i++) {
-      if ($db_list[$i]->id === $db_name) {
-        $rid_db = $db_list[$i]->_rid;
+    foreach ($db_list as $value) {
+      if ($value->id === $db_name) {
+        $rid_db = $value->_rid;
       }
     }
     if (!$rid_db) {
@@ -646,7 +627,7 @@ class DocumentDB
     $headers = $this->getAuthHeaders('DELETE', 'docs', $rid_doc);
     $headers[] = 'Content-Length:0';
     $options = array(
-      CURLOPT_HTTPHEADER => $headers,
+      CURLOPT_HTTPHEADER    => $headers,
       CURLOPT_CUSTOMREQUEST => "DELETE",
     );
     return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs/" . $rid_doc, $options);
@@ -772,5 +753,138 @@ class DocumentDB
     return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs/" . $rid_doc . "/attachments/" . $rid_at, $options);
   }
 
-}
 
+  #=================================================================#
+  #== Stored Proc methods                                         ==#
+  #=================================================================#
+  # create
+  # replace
+  # list
+  # delete
+  # execute
+
+
+  /**
+   * createStoredProcedures
+   *
+   * @link http://
+   * @access public
+   * @param options {
+   *          "body": "function () {\r\n var context = getContext();\r\n var response = context.getResponse();\r\n\r\n response.setBody(\"Hello, World\");\r\n}",
+   *          "id": "sproc_1"
+   *        }
+   * @ref https://{databaseaccount}.documents.azure.com/dbs/{db-id}/colls/{coll-id}/sprocs
+   */
+  public function createStoredProcedures($rid_id, $rid_col)
+  {
+    $headers   = $this->getAuthHeaders('GET', 'sprocs', $rid_col);
+    $headers[] = 'Content-Length:0';
+    $options = array(
+      CURLOPT_HTTPHEADER => $headers,
+      CURLOPT_POST => false
+    );
+    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/sprocs", $options);
+  }
+
+  /**
+   * replaceStoredProcedures
+   *
+   * @link http://
+   * @access public
+   * @param options {
+   *          "body": "function () {\r\n var context = getContext();\r\n var response = context.getResponse();\r\n\r\n response.setBody(\"Hello, World\");\r\n}",
+   *          "id": "sproc_1"
+   *        }
+   * @ref https://{databaseaccount}.documents.azure.com/dbs/{db-id}/colls/{coll-id}/sprocs/{sproc-name}
+   */
+  public function replaceStoredProcedures($rid_id, $rid_col, $sproc_name)
+  {
+    $headers   = $this->getAuthHeaders('GET', 'sprocs', $rid_col);
+    $headers[] = 'Content-Length:0';
+    $options = array(
+      CURLOPT_HTTPHEADER => $headers,
+      CURLOPT_POST => false
+    );
+    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/sprocs/" . $sproc_name, $options);
+  }
+
+  /**
+   * listStoredProcedures
+   *
+   * @link http://
+   * @access public
+   * @param 
+   * @ref https://{databaseaccount}.documents.azure.com/dbs/{db-id}/colls/{coll-id}/sprocs
+   */
+  public function listStoredProcedures($rid_id, $rid_col)
+  {
+    $headers   = $this->getAuthHeaders('GET', 'sprocs', $rid_col);
+    $headers[] = 'Content-Length:0';
+    $options = array(
+      CURLOPT_HTTPHEADER => $headers,
+      CURLOPT_POST => false
+    );
+    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/sprocs", $options);
+  }
+
+  /**
+   * deleteStoredProcedures
+   *
+   * @link http://
+   * @access public
+   * @param 
+   * @ref https://{databaseaccount}.documents.azure.com/dbs/{db-id}/colls/{coll-id}/sprocs/{sproc-name}
+   */
+  public function deleteStoredProcedures($rid_id, $rid_col, $sproc_name)
+  {
+    $headers   = $this->getAuthHeaders('GET', 'sprocs', $rid_col);
+    $headers[] = 'Content-Length:0';
+    $options = array(
+      CURLOPT_HTTPHEADER => $headers,
+      CURLOPT_POST => false
+    );
+    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/sprocs/" . $sproc_name, $options);
+  }
+
+  /**
+   * executeStoredProcedure
+   *
+   * @link http://
+   * @access public
+   * @param
+   * @ref https://{databaseaccount}.documents.azure.com/dbs/{db-id}/colls/{coll-id}/sprocs/{sproc-name}
+   */
+  public function executeStoredProcedure($rid_id, $rid_col, $proc_name, $json)
+  {
+    $proc_id = '';
+    $object = json_decode($this->listStoredProcedures($rid_id, $rid_col));
+
+    if (isset($object->{"StoredProcedures"})) {
+    	$col_list = $object->{"StoredProcedures"};
+    	foreach ($col_list as $value) {
+      		if ($value->id === $proc_name) {
+        		$proc_id = $value->_rid;
+      		}
+    	}
+    	if (!$proc_id) {
+		// We should create but we don't want to create an empty body function
+		return;
+    	}
+    } else {
+	// we did not get any stored procs
+	return;
+    }
+
+    $headers = $this->getAuthHeaders('POST', 'sprocs', $proc_id);
+    $headers[] = 'Content-Length:' . strlen($json);
+    $options = array(
+      CURLOPT_HTTPHEADER => $headers,
+      CURLOPT_POST       => true,
+      CURLOPT_POSTFIELDS => $json,
+    );
+
+    $url = "/dbs/" . $rid_id . "/colls/" . $rid_col . "/sprocs/" . $proc_id;
+    return $this->request($url, $options);
+  }
+
+}
