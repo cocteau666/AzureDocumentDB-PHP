@@ -32,4 +32,4 @@ Sample
     
     // Debug
     $object = json_decode($json);
-    var_dump($object);
+    var_dump($object->Documents);
