@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (C) 2014 Takeshi SAKURAI <sakurai@pnop.co.jp>
+ * Copyright (C) 2014 - 2017 Takeshi SAKURAI <sakurai@pnop.co.jp>
  *      http://www.pnop.co.jp/
  *
  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -22,10 +22,11 @@
  * Wrapper class of Document DB REST API
  *
  * @link http://msdn.microsoft.com/en-us/library/azure/dn781481.aspx
- * @version 1.1
+ * @version 2.0
  * @author Takeshi SAKURAI <sakurai@pnop.co.jp>
  * @since PHP 5.3
  */
+require_once 'HTTP/Request2.php';
 
 class DocumentDBDatabase
 {
@@ -176,25 +177,37 @@ class DocumentDB
    *
    * @access private
    * @param string $path    request path
-   * @param array  $options request headers and curl options
+   * @param string $method  request method
+   * @param array  $headers request headers
+   * @param string $body    request body (JSON or QUERY)
    * @return string JSON response
    */
-  private function request($path, $options)
+  private function request($path, $method, $headers, $body = NULL)
   {
-    $curl = curl_init($this->host . $path);
-    curl_setopt($curl, CURLOPT_HEADER, $this->debug);
-    curl_setopt($curl, CURLOPT_SSLVERSION, 1);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($curl, CURLOPT_VERBOSE, $this->debug);
+    $request = new Http_Request2($this->host . $path);
+    $request->setHeader($headers);
+    if ($method === "GET") {
+      $request->setMethod(HTTP_Request2::METHOD_GET);
+    } else if ($method === "POST") {
+      $request->setMethod(HTTP_Request2::METHOD_POST);
+    } else if ($method === "PUT") {
+      $request->setMethod(HTTP_Request2::METHOD_PUT);
+    } else if ($method === "DELETE") {
+      $request->setMethod(HTTP_Request2::METHOD_DELETE);
+    }
+    if ($body) {
+      $request->setBody($body);
+    }
+    try
+    {
+      $response = $request->send();
+      return $response->getBody();
+    }
+    catch (HttpException $ex)
+    {
+      return $ex;
+    }
 
-    ($this->debug) ?
-    	print "[[Debug: \nReq: ".curl_getinfo($curl, CURLINFO_HEADER_OUT) : $t=1;
-
-    curl_setopt_array($curl, $options);
-    $result = curl_exec($curl);
-    curl_close($curl);
-    ($this->debug) ? print "\nRes: $result]]\n" : $t=1;
-    return $result;
   }
 
   /**
@@ -235,11 +248,7 @@ class DocumentDB
   {
     $headers = $this->getAuthHeaders('GET', '', '');
     $headers[] = 'Content-Length:0';
-    $options = array(
-      CURLOPT_HTTPHEADER => $headers,
-      CURLOPT_HTTPGET => true,
-    );
-    return $this->request("", $options);
+    return $this->request("", "GET", $headers);
   }
 
   /**
@@ -258,12 +267,7 @@ class DocumentDB
     $headers[] = 'Content-Length:' . strlen($query);
     $headers[] = 'Content-Type:application/sql';
     $headers[] = 'x-ms-documentdb-isquery:True';
-    $options = array(
-      CURLOPT_HTTPHEADER => $headers,
-      CURLOPT_POST => true,
-      CURLOPT_POSTFIELDS => $query,
-    );
-    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs", $options);
+    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs", "POST", $headers, $query);
   }
 
   /**
@@ -277,11 +281,7 @@ class DocumentDB
   {
     $headers = $this->getAuthHeaders('GET', 'dbs', '');
     $headers[] = 'Content-Length:0';
-    $options = array(
-      CURLOPT_HTTPHEADER => $headers,
-      CURLOPT_HTTPGET => true,
-    );
-    return $this->request("/dbs", $options);
+    return $this->request("/dbs", "GET", $headers);
   }
 
   /**
@@ -296,11 +296,7 @@ class DocumentDB
   {
     $headers = $this->getAuthHeaders('GET', 'dbs', $rid_id);
     $headers[] = 'Content-Length:0';
-    $options = array(
-      CURLOPT_HTTPHEADER => $headers,
-      CURLOPT_HTTPGET => true,
-    );
-    return $this->request("/dbs/" . $rid_id, $options);
+    return $this->request("/dbs/" . $rid_id, "GET", $headers);
   }
 
   /**
@@ -315,12 +311,7 @@ class DocumentDB
   {
     $headers = $this->getAuthHeaders('POST', 'dbs', '');
     $headers[] = 'Content-Length:' . strlen($json);
-    $options = array(
-      CURLOPT_HTTPHEADER => $headers,
-      CURLOPT_POST => true,
-      CURLOPT_POSTFIELDS => $json,
-    );
-    return $this->request("/dbs", $options);
+    return $this->request("/dbs", "POST", $headers, $json);
   }
 
   /**
@@ -336,12 +327,7 @@ class DocumentDB
   {
     $headers = $this->getAuthHeaders('PUT', 'dbs', $rid_id);
     $headers[] = 'Content-Length:' . strlen($json);
-    $options = array(
-      CURLOPT_HTTPHEADER => $headers,
-      CURLOPT_CUSTOMREQUEST => "PUT",
-      CURLOPT_POSTFIELDS => $json,
-    );
-    return $this->request("/dbs/" . $rid_id, $options);
+    return $this->request("/dbs/" . $rid_id, "PUT", $headers, $json);
   }
 
   /**
@@ -356,11 +342,7 @@ class DocumentDB
   {
     $headers = $this->getAuthHeaders('DELETE', 'dbs', $rid_id);
     $headers[] = 'Content-Length:0';
-    $options = array(
-      CURLOPT_HTTPHEADER => $headers,
-      CURLOPT_CUSTOMREQUEST => "DELETE",
-    );
-    return $this->request("/dbs/" . $rid_id, $options);
+    return $this->request("/dbs/" . $rid_id, "DELETE", $headers);
   }
 
   /**
@@ -375,11 +357,7 @@ class DocumentDB
   {
     $headers = $this->getAuthHeaders('GET', 'users', $rid_id);
     $headers[] = 'Content-Length:0';
-    $options = array(
-      CURLOPT_HTTPHEADER => $headers,
-      CURLOPT_HTTPGET => true,
-    );
-    return $this->request("/dbs/" . $rid_id . "/users", $options);
+    return $this->request("/dbs/" . $rid_id . "/users", "GET", $headers);
   }
 
   /**
@@ -395,11 +373,7 @@ class DocumentDB
   {
     $headers = $this->getAuthHeaders('GET', 'users', $rid_user);
     $headers[] = 'Content-Length:0';
-    $options = array(
-      CURLOPT_HTTPHEADER => $headers,
-      CURLOPT_HTTPGET => true,
-    );
-    return $this->request("/dbs/" . $rid_id . "/users/" . $rid_user, $options);
+    return $this->request("/dbs/" . $rid_id . "/users/" . $rid_user, "GET", $headers);
   }
 
   /**
@@ -415,12 +389,7 @@ class DocumentDB
   {
     $headers = $this->getAuthHeaders('POST', 'users', $rid_id);
     $headers[] = 'Content-Length:' . strlen($json);
-    $options = array(
-      CURLOPT_HTTPHEADER => $headers,
-      CURLOPT_POST => true,
-      CURLOPT_POSTFIELDS => $json,
-    );
-    return $this->request("/dbs/" . $rid_id . "/users", $options);
+    return $this->request("/dbs/" . $rid_id . "/users", "POST", $headers, $json);
   }
 
   /**
@@ -437,12 +406,7 @@ class DocumentDB
   {
     $headers = $this->getAuthHeaders('PUT', 'users', $rid_user);
     $headers[] = 'Content-Length:' . strlen($json);
-    $options = array(
-      CURLOPT_HTTPHEADER => $headers,
-      CURLOPT_CUSTOMREQUEST => "PUT",
-      CURLOPT_POSTFIELDS => $json,
-    );
-    return $this->request("/dbs/" . $rid_id . "/users/" . $rid_user, $options);
+    return $this->request("/dbs/" . $rid_id . "/users/" . $rid_user, "PUT", $headers, $json);
   }
 
   /**
@@ -458,11 +422,7 @@ class DocumentDB
   {
     $headers = $this->getAuthHeaders('DELETE', 'users', $rid_user);
     $headers[] = 'Content-Length:0';
-    $options = array(
-      CURLOPT_HTTPHEADER => $headers,
-      CURLOPT_CUSTOMREQUEST => "DELETE",
-    );
-    return $this->request("/dbs/" . $rid_id . "/users/" . $rid_user, $options);
+    return $this->request("/dbs/" . $rid_id . "/users/" . $rid_user, "DELETE", $headers);
   }
 
   /**
@@ -477,11 +437,7 @@ class DocumentDB
   {
     $headers = $this->getAuthHeaders('GET', 'colls', $rid_id);
     $headers[] = 'Content-Length:0';
-    $options = array(
-      CURLOPT_HTTPHEADER => $headers,
-      CURLOPT_HTTPGET => true,
-    );
-    return $this->request("/dbs/" . $rid_id . "/colls", $options);
+    return $this->request("/dbs/" . $rid_id . "/colls", "GET", $headers);
   }
 
   /**
@@ -497,11 +453,7 @@ class DocumentDB
   {
     $headers = $this->getAuthHeaders('GET', 'colls', $rid_col);
     $headers[] = 'Content-Length:0';
-    $options = array(
-      CURLOPT_HTTPHEADER => $headers,
-      CURLOPT_HTTPGET => true,
-    );
-    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col, $options);
+    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col, "GET", $headers);
   }
 
   /**
@@ -517,12 +469,7 @@ class DocumentDB
   {
     $headers = $this->getAuthHeaders('POST', 'colls', $rid_id);
     $headers[] = 'Content-Length:' . strlen($json);
-    $options = array(
-      CURLOPT_HTTPHEADER => $headers,
-      CURLOPT_POST => true,
-      CURLOPT_POSTFIELDS => $json,
-    );
-    return $this->request("/dbs/" . $rid_id . "/colls", $options);
+    return $this->request("/dbs/" . $rid_id . "/colls", "POST", $headers, $json);
   }
 
   /**
@@ -538,11 +485,7 @@ class DocumentDB
   {
     $headers = $this->getAuthHeaders('DELETE', 'colls', $rid_col);
     $headers[] = 'Content-Length:0';
-    $options = array(
-      CURLOPT_HTTPHEADER => $headers,
-      CURLOPT_CUSTOMREQUEST => "DELETE",
-    );
-    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col, $options);
+    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col, "DELETE", $headers);
   }
 
   /**
@@ -558,11 +501,7 @@ class DocumentDB
   {
     $headers = $this->getAuthHeaders('GET', 'docs', $rid_col);
     $headers[] = 'Content-Length:0';
-    $options = array(
-      CURLOPT_HTTPHEADER => $headers,
-      CURLOPT_HTTPGET => true,
-    );
-    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs", $options);
+    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs", "GET", $headers);
   }
 
   /**
@@ -583,7 +522,7 @@ class DocumentDB
       CURLOPT_HTTPHEADER => $headers,
       CURLOPT_HTTPGET => true,
     );
-    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs/" . $rid_doc, $options);
+    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs/" . $rid_doc, "GET", $headers);
   }
 
   /**
@@ -600,12 +539,7 @@ class DocumentDB
   {
     $headers = $this->getAuthHeaders('POST', 'docs', $rid_col);
     $headers[] = 'Content-Length:' . strlen($json);
-    $options = array(
-      CURLOPT_HTTPHEADER => $headers,
-      CURLOPT_POST => true,
-      CURLOPT_POSTFIELDS => $json,
-    );
-    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs", $options);
+    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs", "POST", $headers, $json);
   }
 
   /**
@@ -623,12 +557,7 @@ class DocumentDB
   {
     $headers = $this->getAuthHeaders('PUT', 'docs', $rid_doc);
     $headers[] = 'Content-Length:' . strlen($json);
-    $options = array(
-      CURLOPT_HTTPHEADER => $headers,
-      CURLOPT_CUSTOMREQUEST => "PUT",
-      CURLOPT_POSTFIELDS => $json,
-    );
-    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs/" . $rid_doc, $options);
+    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs/" . $rid_doc, "PUT", $headers, $json);
   }
 
   /**
@@ -645,11 +574,7 @@ class DocumentDB
   {
     $headers = $this->getAuthHeaders('DELETE', 'docs', $rid_doc);
     $headers[] = 'Content-Length:0';
-    $options = array(
-      CURLOPT_HTTPHEADER => $headers,
-      CURLOPT_CUSTOMREQUEST => "DELETE",
-    );
-    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs/" . $rid_doc, $options);
+    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs/" . $rid_doc, "DELETE", $headers);
   }
 
   /**
@@ -666,11 +591,7 @@ class DocumentDB
   {
     $headers = $this->getAuthHeaders('GET', 'attachments', $rid_doc);
     $headers[] = 'Content-Length:0';
-    $options = array(
-      CURLOPT_HTTPHEADER => $headers,
-      CURLOPT_HTTPGET => true,
-    );
-    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs/" . $rid_doc . "/attachments", $options);
+    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs/" . $rid_doc . "/attachments", "GET", $headers);
   }
 
   /**
@@ -688,11 +609,7 @@ class DocumentDB
   {
     $headers = $this->getAuthHeaders('GET', 'attachments', $rid_at);
     $headers[] = 'Content-Length:0';
-    $options = array(
-      CURLOPT_HTTPHEADER => $headers,
-      CURLOPT_HTTPGET => true,
-    );
-    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs/" . $rid_doc . "/attachments/" . $rid_at, $options);
+    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs/" . $rid_doc . "/attachments/" . $rid_at, "GET", $headers);
   }
 
   /**
@@ -714,12 +631,7 @@ class DocumentDB
     $headers[] = 'Content-Length:' . strlen($file);
     $headers[] = 'Content-Type:' . $content_type;
     $headers[] = 'Slug:' . urlencode($filename);
-    $options = array(
-      CURLOPT_HTTPHEADER => $headers,
-      CURLOPT_POST => true,
-      CURLOPT_POSTFIELDS => $file,
-    );
-    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs/" . $rid_doc . "/attachments", $options);
+    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs/" . $rid_doc . "/attachments", "POST", $headers, $file);
   }
 
   /**
@@ -742,12 +654,7 @@ class DocumentDB
     $headers[] = 'Content-Length:' . strlen($file);
     $headers[] = 'Content-Type:' . $content_type;
     $headers[] = 'Slug:' . urlencode($filename);
-    $options = array(
-      CURLOPT_HTTPHEADER => $headers,
-      CURLOPT_CUSTOMREQUEST => "PUT",
-      CURLOPT_POSTFIELDS => $file,
-    );
-    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs/" . $rid_doc . "/attachments/" . $rid_at, $options);
+    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs/" . $rid_doc . "/attachments/" . $rid_at, "PUT", $headers, $file);
   }
 
   /**
@@ -765,11 +672,7 @@ class DocumentDB
   {
     $headers = $this->getAuthHeaders('DELETE', 'attachments', $rid_at);
     $headers[] = 'Content-Length:0';
-    $options = array(
-      CURLOPT_HTTPHEADER => $headers,
-      CURLOPT_CUSTOMREQUEST => "DELETE",
-    );
-    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs/" . $rid_doc . "/attachments/" . $rid_at, $options);
+    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs/" . $rid_doc . "/attachments/" . $rid_at, "DELETE", $headers);
   }
 
 }
