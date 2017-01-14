@@ -23,8 +23,8 @@ Sample
     // select Collection or create
     $col = $db->selectCollection("col_test");
 
-    // store JSON document
-    $data = '{"FirstName": "Paul","LastName": "Smith"}';
+    // store JSON document ("id" needed)
+    $data = '{"id":1234567890, "FirstName": "Paul","LastName": "Smith"}';
     $result = $col->createDocument($data);
     
     // run query
