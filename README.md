@@ -2,7 +2,7 @@ AzureDocumentDB-PHP
 ===================
 
 Azure DocumentDB REST API Wrapper for PHP.  
-cURL function needed.
+Pear HTTP_Request2 module needed.
 
 Sample
 ===================
