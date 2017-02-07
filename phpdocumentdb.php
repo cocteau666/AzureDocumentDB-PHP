@@ -149,7 +149,7 @@ class DocumentDB
     $x_ms_date = gmdate('D, d M Y H:i:s T', strtotime('+2 minutes'));
     $master = 'master';
     $token = '1.0';
-    $x_ms_version = '2015-12-16';
+    $x_ms_version = '2016-07-11';
 
     $key = base64_decode($this->master_key);
     $string_to_sign = $verb . "\n" .
@@ -266,6 +266,7 @@ class DocumentDB
     $headers = $this->getAuthHeaders('POST', 'docs', $rid_col);
     $headers[] = 'Content-Length:' . strlen($query);
     $headers[] = 'Content-Type:application/sql';
+    $headers[] = 'x-ms-max-item-count:-1';
     $headers[] = 'x-ms-documentdb-isquery:True';
     return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs", "POST", $headers, $query);
   }
