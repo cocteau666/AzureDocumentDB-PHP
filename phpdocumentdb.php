@@ -22,7 +22,7 @@
  * Wrapper class of Document DB REST API
  *
  * @link http://msdn.microsoft.com/en-us/library/azure/dn781481.aspx
- * @version 2.0
+ * @version 2.1
  * @author Takeshi SAKURAI <sakurai@pnop.co.jp>
  * @since PHP 5.3
  */
@@ -116,7 +116,7 @@ class DocumentDBCollection
    * deleteDocument
    *
    * @access public
-   * @param int $id document ID
+   * @param  string $id document ID
    * @return string JSON strings
    */
   public function deleteDocument($id)

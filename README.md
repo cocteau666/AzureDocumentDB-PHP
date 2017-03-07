@@ -33,3 +33,8 @@ Sample
     // Debug
     $object = json_decode($json);
     var_dump($object->Documents);
+
+    // delete document (specify document id when created)
+    $id = "1234567890";
+    echo $col->deleteDocument($id);
+
