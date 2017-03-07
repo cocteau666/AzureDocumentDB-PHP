@@ -111,6 +111,19 @@ class DocumentDBCollection
   {
     return $this->document_db->createDocument($this->rid_db, $this->rid_col, $json);
   }
+
+  /**
+   * deleteDocument
+   *
+   * @access public
+   * @param int $id document ID
+   * @return string JSON strings
+   */
+  public function deleteDocument($id)
+  {
+    return $this->document_db->deleteDocument($this->rid_db, $this->rid_col, $id);
+  }
+
 }
 
 class DocumentDB
