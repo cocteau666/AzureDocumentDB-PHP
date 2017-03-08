@@ -4,6 +4,13 @@ AzureDocumentDB-PHP
 Azure DocumentDB REST API Wrapper for PHP.  
 Pear HTTP_Request2 module needed.
 
+
+New
+===================
+Add "deleteDocument" method (2.1)
+HTTP_Request2 needed (2.0)
+
+
 Sample
 ===================
 
