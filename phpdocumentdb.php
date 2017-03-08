@@ -116,12 +116,12 @@ class DocumentDBCollection
    * deleteDocument
    *
    * @access public
-   * @param  string $id document ID
+   * @param  string $rid document ResourceID (_rid)
    * @return string JSON strings
    */
-  public function deleteDocument($id)
+  public function deleteDocument($rid)
   {
-    return $this->document_db->deleteDocument($this->rid_db, $this->rid_col, $id);
+    return $this->document_db->deleteDocument($this->rid_db, $this->rid_col, $rid);
   }
 
 }

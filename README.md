@@ -41,7 +41,12 @@ Sample
     $object = json_decode($json);
     var_dump($object->Documents);
 
-    // delete document (specify document id when created)
-    $id = "1234567890";
-    echo $col->deleteDocument($id);
+    // get document ResourceID
+    $json = $col->query("SELECT col_test._rid FROM col_test");
+    $object = json_decode($json);
+    var_dump($object->Documents);
+
+    // delete document (specify document _rid when created)
+    $rid = "In4LANe-bbAAAAAAAAAAAA==";
+    echo $col->deleteDocument($rid);
 
