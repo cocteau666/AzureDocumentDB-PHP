@@ -1,0 +1,47 @@
+<?php
+/**
+ *
+ * Command Line Tools for Azure DocumentDB SQL
+ *
+ */
+
+// Before execute, you don't forget to install "HTTP_Request2"
+date_default_timezone_set('Asia/Tokyo');
+set_include_path("/usr/local/share/pear/");
+
+$options = getopt("h:k:d:c:q:");
+
+$host       = $options["h"];
+$key        = $options["k"];
+$database   = $options["d"];
+$collection = $options["c"];
+$query      = $options["q"];
+
+if ($host && $key && $database && $collection && $query) {
+  require_once './phpdocumentdb.php';
+
+  // connect DocumentDB
+  $documentdb = new DocumentDB($host, $key);
+
+  // select Database or create
+  $db = $documentdb->selectDB($database);
+
+  // select Collection or create
+  $col = $db->selectCollection($collection);
+
+  // run query
+  $json = $col->query($query);
+
+  // Output
+  echo $json . "\n";
+  //$object = json_decode($json);
+  //var_dump($object->Documents);
+
+  exit(0);
+
+} else {
+  echo "usage: ";
+  echo "php DocDB -h URI -k PRIMARY/SECONDARY_KEY -d Database -c Collection -q SQL\n";
+  exit(1);
+}
+

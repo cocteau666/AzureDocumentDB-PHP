@@ -7,6 +7,7 @@ Pear HTTP_Request2 module needed.
 
 New
 ===================
+Add "DocDB" Command Line Tool to check SQL directly
 Add "deleteDocument" method (2.1)
 HTTP_Request2 needed (2.0)
 
@@ -49,4 +50,11 @@ Sample
     // delete document (specify document _rid when created)
     $rid = "In4LANe-bbAAAAAAAAAAAA==";
     echo $col->deleteDocument($rid);
+
+
+DocDB
+===================
+Before execute, you don't forget to install "HTTP_Request2" !!
+
+usage: php DocDB -h URI -k PRIMARY/SECONDARY_KEY -d Database -c Collection -q SQL
 
