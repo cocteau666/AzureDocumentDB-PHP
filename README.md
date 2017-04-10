@@ -7,9 +7,9 @@ Pear HTTP_Request2 module needed.
 
 New
 ===================
-Add "DocDB" Command Line Tool to check SQL directly
-Add "deleteDocument" method (2.1)
-HTTP_Request2 needed (2.0)
+Add "DocDB" Command Line Tool to check SQL directly.
+Add "deleteDocument" method (2.1).
+HTTP_Request2 needed (2.0).
 
 
 Sample
