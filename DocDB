@@ -6,8 +6,8 @@
  */
 
 // Before execute, you don't forget to install "HTTP_Request2"
-date_default_timezone_set('Asia/Tokyo');
-set_include_path("/usr/local/share/pear/");
+//date_default_timezone_set('Asia/Tokyo');
+//set_include_path("/usr/local/share/pear/");
 
 $options = getopt("h:k:d:c:q:");
 
