@@ -162,7 +162,7 @@ class DocumentDB
     $x_ms_date = gmdate('D, d M Y H:i:s T', strtotime('+2 minutes'));
     $master = 'master';
     $token = '1.0';
-    $x_ms_version = '2016-07-11';
+    $x_ms_version = '2017-02-22';
 
     $key = base64_decode($this->master_key);
     $string_to_sign = $verb . "\n" .
