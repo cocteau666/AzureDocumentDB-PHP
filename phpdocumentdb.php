@@ -22,7 +22,7 @@
  * Wrapper class of Document DB REST API
  *
  * @link http://msdn.microsoft.com/en-us/library/azure/dn781481.aspx
- * @version 2.3
+ * @version 2.4
  * @author Takeshi SAKURAI <sakurai@pnop.co.jp>
  * @since PHP 5.3
  */
@@ -799,6 +799,41 @@ class DocumentDB
     $headers = $this->getAuthHeaders('GET', 'permissions', $rid_permission);
     $headers[] = 'Content-Length:0';
     return $this->request("/dbs/" . $rid_id . "/users/" . $rid_user . "/permissions/" . $rid_permission, "GET", $headers);
+  }
+
+  /**
+   * replacePermission
+   *
+   * @link http://msdn.microsoft.com/en-us/library/azure/dn803949.aspx
+   * @access public
+   * @param string $rid_id   Resource ID
+   * @param string $rid_user Resource User ID
+   * @param string $rid_permission Resource Permission ID
+   * @param string $json   JSON request
+   * @return string JSON response
+   */
+  public function replacePermission($rid_id, $rid_user, $rid_permission, $json)
+  {
+    $headers = $this->getAuthHeaders('PUT', 'permissions', $rid_permission);
+    $headers[] = 'Content-Length:' . strlen($json);
+    return $this->request("/dbs/" . $rid_id . "/users/" . $rid_user . "/permissions/" . $rid_permission, "PUT", $headers, $json);
+  }
+
+  /**
+   * deletePermission
+   *
+   * @link http://msdn.microsoft.com/en-us/library/azure/dn803949.aspx
+   * @access public
+   * @param string $rid_id   Resource ID
+   * @param string $rid_user Resource User ID
+   * @param string $rid_permission Resource Permission ID
+   * @return string JSON response
+   */
+  public function deletePermission($rid_id, $rid_user, $rid_permission)
+  {
+    $headers = $this->getAuthHeaders('DELETE', 'permissions', $rid_permission);
+    $headers[] = 'Content-Length:0';
+    return $this->request("/dbs/" . $rid_id . "/users/" . $rid_user . "/permissions/" . $rid_permission, "DELETE", $headers);
   }
 
   // Stored Procedures

@@ -7,6 +7,7 @@ Pear HTTP_Request2 module needed.
 
 New
 ===================
+Add "Permission" support (2.4)
 Add "Offer" support (2.3)
 Update API versipon "2017-02-22" (2.2)
 Add "DocDB" Command Line Tool to check SQL directly.
@@ -25,6 +26,7 @@ Now these APIs are supported.
 - Document
 - Attachment
 - Offer
+- Permission
 
 
 Sample
