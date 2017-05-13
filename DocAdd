@@ -1,0 +1,69 @@
+<?php
+/*
+ * Copyright (C) 2014 - 2017 Takeshi SAKURAI <sakurai@pnop.co.jp>
+ *      http://www.pnop.co.jp/
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * DocAdd
+ *
+ * Command Line Tool for creating document on Azure DocumentDB.
+ * Before execute, you don't forget to install "HTTP_Request2"
+ *
+ * @link http://msdn.microsoft.com/en-us/library/azure/dn781481.aspx
+ * @version 1.0
+ * @author Takeshi SAKURAI <sakurai@pnop.co.jp>
+ * @since PHP 5.3
+ */
+
+//date_default_timezone_set('Asia/Tokyo');
+//set_include_path("/usr/local/share/pear/");
+
+$options = getopt("h:k:d:c:f:");
+
+$host       = $options["h"];
+$key        = $options["k"];
+$database   = $options["d"];
+$collection = $options["c"];
+$filename   = $options["f"];
+
+if ($host && $key && $database && $collection && $filename) {
+  require_once './phpdocumentdb.php';
+
+  // connect DocumentDB
+  $documentdb = new DocumentDB($host, $key);
+
+  // select Database or create
+  $db = $documentdb->selectDB($database);
+
+  // select Collection or create
+  $col = $db->selectCollection($collection);
+
+  // create
+  $result = $result = $col->createDocument(file_get_contents($filename));
+
+  // Output
+  echo $result . "\n";
+  //$object = json_decode($json);
+  //var_dump($object->Documents);
+
+  exit(0);
+
+} else {
+  echo "usage: ";
+  echo "php DocAdd -h URI -k PRIMARY/SECONDARY_KEY -d Database -c Collection -f JSON_file\n";
+  exit(1);
+}
+

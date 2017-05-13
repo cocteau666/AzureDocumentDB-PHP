@@ -52,9 +52,16 @@ Sample
     echo $col->deleteDocument($rid);
 
 
-DocDB
+DocDB (Command line tool for executing SQL on Azure DocumentDB)
 ===================
 Before execute, you don't forget to install "HTTP_Request2" !!
 
 usage: php DocDB -h URI -k PRIMARY/SECONDARY_KEY -d Database -c Collection -q SQL
+
+
+DocAdd (Command line tool for creating documents on Azure DocumentDB)
+===================
+Before execute, you don't forget to install "HTTP_Request2" !!
+
+usage: php DocAdd -h URI -k PRIMARY/SECONDARY_KEY -d Database -c Collection -f JSON_file
 
