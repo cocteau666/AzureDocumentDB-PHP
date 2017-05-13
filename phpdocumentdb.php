@@ -751,5 +751,61 @@ class DocumentDB
     return $this->request("/offers", "POST", $headers, $json);
   }
 
+  /**
+   * listPermissions
+   *
+   * @link http://msdn.microsoft.com/en-us/library/azure/dn803949.aspx
+   * @access public
+   * @param string $rid_id   Resource ID
+   * @param string $rid_user Resource User ID
+   * @return string JSON response
+   */
+  public function listPermissions($rid_id, $rid_user)
+  {
+    $headers = $this->getAuthHeaders('GET', 'permissions', $rid_user);
+    $headers[] = 'Content-Length:0';
+    return $this->request("/dbs/" . $rid_id . "/users/" . $rid_user . "/permissions", "GET", $headers);
+  }
+
+  /**
+   * createPermission
+   *
+   * @link http://msdn.microsoft.com/en-us/library/azure/dn803946.aspx
+   * @access public
+   * @param string $rid_id Resource ID
+   * @param string $rid_user Resource User ID
+   * @param string $json   JSON request
+   * @return string JSON response
+   */
+  public function createPermission($rid_id, $rid_user, $json)
+  {
+    $headers = $this->getAuthHeaders('POST', 'permissions', $rid_user);
+    $headers[] = 'Content-Length:' . strlen($json);
+    return $this->request("/dbs/" . $rid_id . "/users/" . $rid_user . "/permissions", "POST", $headers, $json);
+  }
+
+  /**
+   * getPermission
+   *
+   * @link http://msdn.microsoft.com/en-us/library/azure/dn803949.aspx
+   * @access public
+   * @param string $rid_id   Resource ID
+   * @param string $rid_user Resource User ID
+   * @param string $rid_permission Resource Permission ID
+   * @return string JSON response
+   */
+  public function getPermission($rid_id, $rid_user, $rid_permission)
+  {
+    $headers = $this->getAuthHeaders('GET', 'permissions', $rid_permission);
+    $headers[] = 'Content-Length:0';
+    return $this->request("/dbs/" . $rid_id . "/users/" . $rid_user . "/permissions/" . $rid_permission, "GET", $headers);
+  }
+
+  // Stored Procedures
+
+  // User Defined Functions
+
+  // Triggers
+
 }
 
