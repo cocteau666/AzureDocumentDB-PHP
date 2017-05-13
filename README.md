@@ -1,7 +1,7 @@
 AzureDocumentDB-PHP
 ===================
 
-Azure DocumentDB REST API Wrapper for PHP.  
+Azure Cosmos DB (Document DB) REST API Wrapper for PHP.  
 Pear HTTP_Request2 module needed.
 
 
