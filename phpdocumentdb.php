@@ -22,7 +22,7 @@
  * Wrapper class of Document DB REST API
  *
  * @link http://msdn.microsoft.com/en-us/library/azure/dn781481.aspx
- * @version 2.1
+ * @version 2.2
  * @author Takeshi SAKURAI <sakurai@pnop.co.jp>
  * @since PHP 5.3
  */

@@ -7,9 +7,15 @@ Pear HTTP_Request2 module needed.
 
 New
 ===================
+Update API versipon "2017-02-22" (2.2)
 Add "DocDB" Command Line Tool to check SQL directly.
 Add "deleteDocument" method (2.1).
 HTTP_Request2 needed (2.0).
+
+
+Usage
+===================
+For using Azure Cosmos DB, select API "SQL (DocumentDB)".
 
 
 Sample
