@@ -38,7 +38,7 @@ Sample
     $col = $db->selectCollection("col_test");
 
     // store JSON document ("id" needed)
-    $data = '{"id":1234567890, "FirstName": "Paul","LastName": "Smith"}';
+    $data = '{"id":"1234567890", "FirstName": "Paul","LastName": "Smith"}';
     $result = $col->createDocument($data);
     
     // run query
