@@ -22,7 +22,7 @@
  * Wrapper class of Document DB REST API
  *
  * @link http://msdn.microsoft.com/en-us/library/azure/dn781481.aspx
- * @version 2.2
+ * @version 2.3
  * @author Takeshi SAKURAI <sakurai@pnop.co.jp>
  * @since PHP 5.3
  */
@@ -687,6 +687,68 @@ class DocumentDB
     $headers = $this->getAuthHeaders('DELETE', 'attachments', $rid_at);
     $headers[] = 'Content-Length:0';
     return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs/" . $rid_doc . "/attachments/" . $rid_at, "DELETE", $headers);
+  }
+
+  /**
+   * listOffers
+   *
+   * @link http://
+   * @access public
+   * @return string JSON response
+   */
+  public function listOffers()
+  {
+    $headers = $this->getAuthHeaders('GET', 'offers', '');
+    $headers[] = 'Content-Length:0';
+    return $this->request("/offers", "GET", $headers);
+  }
+
+  /**
+   * getOffer
+   *
+   * @link http://
+   * @access public
+   * @param string $rid  Resource ID
+   * @return string JSON response
+   */
+  public function getOffer($rid)
+  {
+    $headers = $this->getAuthHeaders('GET', 'offers', $rid);
+    $headers[] = 'Content-Length:0';
+    return $this->request("/offers/" . $rid, "GET", $headers);
+  }
+
+  /**
+   * replaceOffer
+   *
+   * @link http://
+   * @access public
+   * @param string $rid  Resource ID
+   * @param string $json    JSON request
+   * @return string JSON response
+   */
+  public function replaceOffer($rid, $json)
+  {
+    $headers = $this->getAuthHeaders('PUT', 'offers', $rid);
+    $headers[] = 'Content-Length:' . strlen($json);
+    return $this->request("/offers/" . $rid, "PUT", $headers, $json);
+  }
+
+  /**
+   * queryingOffers
+   *
+   * @link http://
+   * @access public
+   * @param string $json    JSON request
+   * @return string JSON response
+   */
+  public function queryingOffers($json)
+  {
+    $headers = $this->getAuthHeaders('POST', 'offers', '');
+    $headers[] = 'Content-Length:' . strlen($json);
+    $headers[] = 'Content-Type:application/query+json';
+    $headers[] = 'x-ms-documentdb-isquery:True';
+    return $this->request("/offers", "POST", $headers, $json);
   }
 
 }
