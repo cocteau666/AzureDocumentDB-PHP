@@ -124,6 +124,19 @@ class DocumentDBCollection
     return $this->document_db->deleteDocument($this->rid_db, $this->rid_col, $rid);
   }
 
+  /**
+   * replaceDocument
+   * 
+   * @access public
+   * @param  string $rid_doc Resource Doc ID
+   * @param  string JSON strings
+   * @return string JSON strings
+   */
+  public function replaceDocument($rid_doc, $json)
+  {
+    return $this->document_db->replaceDocument($this->rid_db, $this->rid_col, $rid_doc, $json);
+  }
+
 }
 
 class DocumentDB

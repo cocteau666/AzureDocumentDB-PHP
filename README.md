@@ -59,6 +59,11 @@ Sample
     $object = json_decode($json);
     var_dump($object->Documents);
 
+    // replace Document
+    $paulSmith = $object[0];
+    $paulSmith->age = '1946-07-05';
+    $col->replaceDocument($paulSmith->_rid, $paulSmith);
+    
     // get document ResourceID
     $json = $col->query("SELECT col_test._rid FROM col_test");
     $object = json_decode($json);
