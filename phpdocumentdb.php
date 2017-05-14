@@ -22,7 +22,7 @@
  * Wrapper class of Document DB REST API
  *
  * @link http://msdn.microsoft.com/en-us/library/azure/dn781481.aspx
- * @version 2.5
+ * @version 2.6
  * @author Takeshi SAKURAI <sakurai@pnop.co.jp>
  * @since PHP 5.3
  */
@@ -169,6 +169,23 @@ class DocumentDBCollection
   public function deleteStoredProcedure($sproc_name)
   {
     return $this->document_db->deleteStoredProcedure($this->rid_db, $this->rid_col, $sporc_name);
+  }
+
+  public function listUserDefinedFunctions()
+  {
+    return $this->document_db->listUserDefinedFunctions($this->rid_db, $this->rid_col);
+  }
+  public function createUserDefinedFunction($json)
+  {
+    return $this->document_db->createUserDefinedFunction($this->rid_db, $this->rid_col, $json);
+  }
+  public function replaceUserDefinedFunction($udf, $json)
+  {
+    return $this->document_db->replaceUserDefinedFunction($this->rid_db, $this->rid_col, $udf, $json);
+  }
+  public function deleteUserDefinedFunction($udf)
+  {
+    return $this->document_db->deleteUserDefinedFunction($this->rid_db, $this->rid_col, $udf);
   }
 
 }
@@ -970,6 +987,73 @@ class DocumentDB
   }
 
   // User Defined Functions
+  /**
+   * listUserDefinedFunctions
+   *
+   * @link http://
+   * @access public
+   * @param string $rid_id Resource ID
+   * @param string $rid_colResource Collection ID
+   * @return string JSON response
+   */
+  public function listUserDefinedFunctions($rid_id, $rid_col)
+  {
+    $headers = $this->getAuthHeaders('GET', 'udfs', $rid_col);
+    $headers[] = 'Content-Length:0';
+    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/udfs", "GET", $headers);
+  }
+
+  /**
+   * createUserDefinedFunction
+   *
+   * @link http://msdn.microsoft.com/en-us/library/azure/dn803933.aspx
+   * @access public
+   * @param string $rid_id       Resource ID
+   * @param string $rid_col      Resource Collection ID
+   * @param string $json         JSON of function
+   * @return string JSON response
+   */
+  public function createUserDefinedFunction($rid_id, $rid_col, $json)
+  {
+    $headers = $this->getAuthHeaders('POST', 'udfs', $rid_col);
+    $headers[] = 'Content-Length:' . strlen($json);
+    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/udfs", "POST", $headers, $json);
+  }
+
+  /**
+   * replaceUserDefinedFunction
+   *
+   * @link http://
+   * @access public
+   * @param string $rid_id       Resource ID
+   * @param string $rid_col      Resource Collection ID
+   * @param string $rid_udf      Resource ID of User Defined Function
+   * @param string $json    Parameters
+   * @return string JSON response
+   */
+  public function replaceUserDefinedFunction($rid_id, $rid_col, $rid_udf, $json)
+  {
+    $headers = $this->getAuthHeaders('PUT', 'udfs', $rid_udf);
+    $headers[] = 'Content-Length:' . strlen($json);
+    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/udfs/" . $rid_udf, "PUT", $headers, $json);
+  }
+
+  /**
+   * deleteUserDefinedFunction
+   *
+   * @link http://
+   * @access public
+   * @param string $rid_id  Resource ID
+   * @param string $rid_col Resource Collection ID
+   * @param string $rid_udf  Resource ID of User Defined Function
+   * @return string JSON response
+   */
+  public function deleteUserDefinedFunction($rid_id, $rid_col, $rid_udf)
+  {
+    $headers = $this->getAuthHeaders('DELETE', 'udfs', $rid_udf);
+    $headers[] = 'Content-Length:0';
+    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/udfs/" . $rid_udf, "DELETE", $headers);
+  }
 
   // Triggers
 

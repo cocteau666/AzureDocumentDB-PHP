@@ -7,7 +7,8 @@ Pear HTTP_Request2 module needed.
 
 New
 ===================
-- Add "Stored Procedure" support (2.4)
+- Add "User Defined Function" support (2.6)
+- Add "Stored Procedure" support (2.5)
 - Add "Permission" support (2.4)
 - Add "Offer" support (2.3)
 - Update API versipon "2017-02-22" (2.2)
@@ -29,6 +30,7 @@ Now these APIs are supported.
 - Offer
 - Permission
 - Stored Procedure
+- User Defined Function
 
 
 Sample
