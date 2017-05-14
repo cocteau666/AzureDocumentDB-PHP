@@ -7,6 +7,7 @@ Pear HTTP_Request2 module needed.
 
 New
 ===================
+- Add "Trigger" support (2.7)
 - Add "User Defined Function" support (2.6)
 - Add "Stored Procedure" support (2.5)
 - Add "Permission" support (2.4)
@@ -31,6 +32,7 @@ Now these APIs are supported.
 - Permission
 - Stored Procedure
 - User Defined Function
+- Trigger
 
 
 Sample

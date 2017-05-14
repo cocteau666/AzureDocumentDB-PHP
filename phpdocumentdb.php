@@ -22,7 +22,7 @@
  * Wrapper class of Document DB REST API
  *
  * @link http://msdn.microsoft.com/en-us/library/azure/dn781481.aspx
- * @version 2.6
+ * @version 2.7
  * @author Takeshi SAKURAI <sakurai@pnop.co.jp>
  * @since PHP 5.3
  */
@@ -186,6 +186,23 @@ class DocumentDBCollection
   public function deleteUserDefinedFunction($udf)
   {
     return $this->document_db->deleteUserDefinedFunction($this->rid_db, $this->rid_col, $udf);
+  }
+
+  public function listTriggers()
+  {
+    return $this->document_db->listTriggers($this->rid_db, $this->rid_col);
+  }
+  public function createTrigger($json)
+  {
+    return $this->document_db->createTrigger($this->rid_db, $this->rid_col, $json);
+  }
+  public function replaceTrigger($trigger, $json)
+  {
+    return $this->document_db->replaceTrigger($this->rid_db, $this->rid_col, $trigger, $json);
+  }
+  public function deleteTrigger($trigger)
+  {
+    return $this->document_db->deleteTrigger($this->rid_db, $this->rid_col, $trigger);
   }
 
 }
@@ -986,7 +1003,6 @@ class DocumentDB
     return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/sprocs/" . $rid_sproc, "DELETE", $headers);
   }
 
-  // User Defined Functions
   /**
    * listUserDefinedFunctions
    *
@@ -1055,7 +1071,73 @@ class DocumentDB
     return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/udfs/" . $rid_udf, "DELETE", $headers);
   }
 
-  // Triggers
+  /**
+   * listTriggers
+   *
+   * @link http://
+   * @access public
+   * @param string $rid_id Resource ID
+   * @param string $rid_colResource Collection ID
+   * @return string JSON response
+   */
+  public function listTriggers($rid_id, $rid_col)
+  {
+    $headers = $this->getAuthHeaders('GET', 'triggers', $rid_col);
+    $headers[] = 'Content-Length:0';
+    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/triggers", "GET", $headers);
+  }
+
+  /**
+   * createTrigger
+   *
+   * @link http://msdn.microsoft.com/en-us/library/azure/dn803933.aspx
+   * @access public
+   * @param string $rid_id       Resource ID
+   * @param string $rid_col      Resource Collection ID
+   * @param string $json         JSON of function
+   * @return string JSON response
+   */
+  public function createTrigger($rid_id, $rid_col, $json)
+  {
+    $headers = $this->getAuthHeaders('POST', 'triggers', $rid_col);
+    $headers[] = 'Content-Length:' . strlen($json);
+    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/triggers", "POST", $headers, $json);
+  }
+
+  /**
+   * replaceTrigger
+   *
+   * @link http://
+   * @access public
+   * @param string $rid_id       Resource ID
+   * @param string $rid_col      Resource Collection ID
+   * @param string $rid_trigger      Resource ID of Trigger
+   * @param string $json    Parameters
+   * @return string JSON response
+   */
+  public function replaceTrigger($rid_id, $rid_col, $rid_trigger, $json)
+  {
+    $headers = $this->getAuthHeaders('PUT', 'triggers', $rid_trigger);
+    $headers[] = 'Content-Length:' . strlen($json);
+    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/triggers/" . $rid_trigger, "PUT", $headers, $json);
+  }
+
+  /**
+   * deleteTrigger
+   *
+   * @link http://
+   * @access public
+   * @param string $rid_id  Resource ID
+   * @param string $rid_col Resource Collection ID
+   * @param string $rid_trigger  Resource ID of Trigger
+   * @return string JSON response
+   */
+  public function deleteTrigger($rid_id, $rid_col, $rid_trigger)
+  {
+    $headers = $this->getAuthHeaders('DELETE', 'triggers', $rid_trigger);
+    $headers[] = 'Content-Length:0';
+    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/triggers/" . $rid_trigger, "DELETE", $headers);
+  }
 
 }
 
