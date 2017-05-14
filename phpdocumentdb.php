@@ -22,7 +22,7 @@
  * Wrapper class of Document DB REST API
  *
  * @link http://msdn.microsoft.com/en-us/library/azure/dn781481.aspx
- * @version 2.4
+ * @version 2.5
  * @author Takeshi SAKURAI <sakurai@pnop.co.jp>
  * @since PHP 5.3
  */
@@ -122,6 +122,53 @@ class DocumentDBCollection
   public function deleteDocument($rid)
   {
     return $this->document_db->deleteDocument($this->rid_db, $this->rid_col, $rid);
+  }
+
+/*
+  public function createUser($json)
+  {
+    return $this->document_db->createUser($this->rid_db, $json);
+  }
+
+  public function listUsers()
+  {
+    return $this->document_db->listUsers($this->rid_db, $rid);
+  }
+
+  public function deletePermission($uid, $pid)
+  {
+    return $this->document_db->deletePermission($this->rid_db, $uid, $pid);
+  }
+
+  public function listPermissions($uid)
+  {
+    return $this->document_db->listPermissions($this->rid_db, $uid);
+  }
+
+  public function getPermission($uid, $pid)
+  {
+    return $this->document_db->getPermission($this->rid_db, $uid, $pid);
+  }
+*/
+  public function listStoredProcedures()
+  {
+    return $this->document_db->listStoredProcedures($this->rid_db, $this->rid_col);
+  }
+  public function executeStoredProcedure($sproc_name, $json)
+  {
+    return $this->document_db->executeStoredProcedure($this->rid_db, $this->rid_col, $sproc_name, $json);
+  }
+  public function createStoredProcedure($json)
+  {
+    return $this->document_db->createStoredProcedure($this->rid_db, $this->rid_col, $json);
+  }
+  public function replaceStoredProcedure($sproc_name, $json)
+  {
+    return $this->document_db->replaceStoredProcedure($this->rid_db, $this->rid_col, $sproc_name, $json);
+  }
+  public function deleteStoredProcedure($sproc_name)
+  {
+    return $this->document_db->deleteStoredProcedure($this->rid_db, $this->rid_col, $sporc_name);
   }
 
 }
@@ -836,7 +883,91 @@ class DocumentDB
     return $this->request("/dbs/" . $rid_id . "/users/" . $rid_user . "/permissions/" . $rid_permission, "DELETE", $headers);
   }
 
-  // Stored Procedures
+  /**
+   * listStoredProcedures
+   *
+   * @link http://
+   * @access public
+   * @param string $rid_id Resource ID
+   * @param string $rid_colResource Collection ID
+   * @return string JSON response
+   */
+  public function listStoredProcedures($rid_id, $rid_col)
+  {
+    $headers = $this->getAuthHeaders('GET', 'sprocs', $rid_col);
+    $headers[] = 'Content-Length:0';
+    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/sprocs", "GET", $headers);
+  }
+
+  /**
+   * executeStoredProcedure
+   *
+   * @link http://
+   * @access public
+   * @param string $rid_id  Resource ID
+   * @param string $rid_col Resource Collection ID
+   * @param string $rid_sproc  Resource ID of Stored Procedurea
+   * @param string $json    Parameters
+   * @return string JSON response
+   */
+  public function executeStoredProcedure($rid_id, $rid_col, $rid_sproc, $json)
+  {
+    $headers = $this->getAuthHeaders('POST', 'sprocs', $rid_sproc);
+    $headers[] = 'Content-Length:' . strlen($json);
+    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/sprocs/" . $rid_sproc, "POST", $headers, $json);
+  }
+
+  /**
+   * createStoredProcedure
+   *
+   * @link http://msdn.microsoft.com/en-us/library/azure/dn803933.aspx
+   * @access public
+   * @param string $rid_id       Resource ID
+   * @param string $rid_col      Resource Collection ID
+   * @param string $json         JSON of function
+   * @return string JSON response
+   */
+  public function createStoredProcedure($rid_id, $rid_col, $json)
+  {
+    $headers = $this->getAuthHeaders('POST', 'sprocs', $rid_col);
+    $headers[] = 'Content-Length:' . strlen($json);
+    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/sprocs", "POST", $headers, $json);
+  }
+
+  /**
+   * replaceStoredProcedure
+   *
+   * @link http://
+   * @access public
+   * @param string $rid_id       Resource ID
+   * @param string $rid_col      Resource Collection ID
+   * @param string $rid_sproc  Resource ID of Stored Procedurea
+   * @param string $json    Parameters
+   * @return string JSON response
+   */
+  public function replaceStoredProcedure($rid_id, $rid_col, $rid_sproc, $json)
+  {
+    $headers = $this->getAuthHeaders('PUT', 'sprocs', $rid_sproc);
+    $headers[] = 'Content-Length:' . strlen($json);
+    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/sprocs/" . $rid_sproc, "PUT", $headers, $json);
+  }
+
+  /**
+   * deleteStoredProcedure (MethodNotAllowed: MUST FIX)
+   *
+   * @link http://
+   * @access public
+   * @param string $rid_id  Resource ID
+   * @param string $rid_col Resource Collection ID
+   * @param string $rid_sproc  Resource ID of Stored Procedurea
+   * @return string JSON response
+   */
+  public function deleteStoredProcedure($rid_id, $rid_col, $rid_sproc)
+  {
+    $headers = $this->getAuthHeaders('DELETE', 'sprocs', $rid_sproc);
+    $headers[] = 'Content-Length:0';
+    return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/sprocs/" . $rid_sproc, "DELETE", $headers);
+  }
 
   // User Defined Functions
 
