@@ -279,6 +279,12 @@ class DocumentDB
   private function request($path, $method, $headers, $body = NULL)
   {
     $request = new Http_Request2($this->host . $path);
+    // ######### To Fix the SSL issue ###########
+    $request->setConfig(array(
+        'ssl_verify_peer'   => FALSE,
+        'ssl_verify_host'   => FALSE
+    ));
+    // ########################################
     $request->setHeader($headers);
     if ($method === "GET") {
       $request->setMethod(HTTP_Request2::METHOD_GET);
