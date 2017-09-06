@@ -299,6 +299,32 @@ class DocumentDB
              'authorization: ' . urlencode("type=$master&ver=$token&sig=$sig")
            );
   }
+  
+  /**
+   * checkForErrors
+   *
+   * @access private
+   * @param string $action   Action executed
+   * @param string $response Response
+   * @return bool error
+   */
+  private function checkForErrors($action, $response)
+  {
+      $error = false;
+      
+           if($action == 'getInfo')                      $error = ($response['status'] != 200); 
+      else if (0 === strpos($action, 'query'))           $error = ($response['status'] != 200); 
+      else if (0 === strpos($action, 'list'))            $error = ($response['status'] != 200); 
+      else if (0 === strpos($action, 'get'))             $error = ($response['status'] != 200 && $response['status'] != 404); 
+      else if (0 === strpos($action, 'create'))          $error = ($response['status'] != 201 && $response['status'] != 409);
+      else if (0 === strpos($action, 'replace'))         $error = ($response['status'] != 200 && $response['status'] != 404                                         
+                                                                                              && $response['status'] != 409);
+      else if (0 === strpos($action, 'delete'))          $error = ($response['status'] != 204 && $response['status'] != 404);
+      else if (0 === strpos($action, 'execute'))         $error = ($response['status'] != 200);
+      else                                               $error = ($response['status'] < 200  || $response['status']  > 409);
+      
+      return $error;
+  }
 
   /**
    * request
@@ -356,7 +382,7 @@ class DocumentDB
       );
     }
     
-    if(($response['status'] < 200 || $response['status'] >= 400) && $this->error_handler) 
+    if($this->checkForErrors(debug_backtrace()[1]['function'], $response))
         $response = ($this->error_handler)($response);
     
     return $response;
