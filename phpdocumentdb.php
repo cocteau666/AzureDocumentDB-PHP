@@ -52,8 +52,8 @@ class DocumentDBDatabase
     
     $col_list = $response['data']['DocumentCollections'];
     for ($i=0; $i<count($col_list); $i++) {
-      if ($col_list[$i]->id === $col_name) {
-        $rid_col = $col_list[$i]->_rid;
+      if ($col_list[$i]['id'] === $col_name) {
+        $rid_col = $col_list[$i]['_rid'];
       }
     }
     if (!$rid_col) {
@@ -376,8 +376,8 @@ class DocumentDB
     
     $db_list = $response['data']['Databases'];
     for ($i=0; $i<count($db_list); $i++) {
-      if ($db_list[$i]->id === $db_name) {
-        $rid_db = $db_list[$i]->_rid;
+      if ($db_list[$i]['id'] === $db_name) {
+        $rid_db = $db_list[$i]['_rid'];
       }
     }
     
