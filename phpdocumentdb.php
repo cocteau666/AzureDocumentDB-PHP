@@ -104,24 +104,57 @@ class DocumentDBCollection
    * createDocument
    *
    * @access public
-   * @param string $json JSON formatted document
+   * @param string $json    JSON formatted document
+   * @param bool   $upsert  true: create or update the document, false(default): create if not exists
    * @return string JSON strings
    */
-  public function createDocument($json)
+  public function createDocument($json, $upsert=false)
   {
-    return $this->document_db->createDocument($this->rid_db, $this->rid_col, $json);
+    return $this->document_db->createDocument($this->rid_db, $this->rid_col, $json, $upsert);
+  }
+
+  /**
+   * getDocument
+   *
+   * @link http://msdn.microsoft.com/en-us/library/azure/dn803957.aspx
+   * @access public
+   * @param string $rid_doc             Resource Doc ID
+   * @param string $if_none_match       Returns the ressource if the server ETag value does not match request ETag value, else "304 Not modified"
+   * @return string JSON response
+   */
+  public function getDocument($rid_doc, $if_none_match=null)
+  {
+    return $this->document_db->getDocument($this->rid_db, $this->rid_col, $rid_doc, $if_none_match);
+  }
+  
+  /**
+   * replaceDocument
+   *
+   * @link http://msdn.microsoft.com/en-us/library/azure/dn803947.aspx
+   * @access public
+   * @param string $rid_id          Resource ID
+   * @param string $rid_col         Resource Collection ID
+   * @param string $rid_doc         Resource Doc ID
+   * @param string $json            JSON request
+   * @param string $if_match_etag   Resource is updated if server ETag value matches request ETag value, else operation is rejected with "HTTP 412 Precondition failure"
+   * @return string JSON response
+   */
+  public function replaceDocument($rid_doc, $json, $if_match_etag=null)
+  {
+    return $this->document_db->replaceDocument($this->rid_db, $this->rid_col, $rid_doc, $json, $if_match_etag);
   }
 
   /**
    * deleteDocument
    *
    * @access public
-   * @param  string $rid document ResourceID (_rid)
+   * @param  string $rid            document ResourceID (_rid)
+   * @param  string $if_match_etag  Resource is updated if server ETag value matches request ETag value, else operation is rejected with "HTTP 412 Precondition failure"
    * @return string JSON strings
    */
-  public function deleteDocument($rid)
+  public function deleteDocument($rid, $if_match_etag=null)
   {
-    return $this->document_db->deleteDocument($this->rid_db, $this->rid_col, $rid);
+    return $this->document_db->deleteDocument($this->rid_db, $this->rid_col, $rid, $if_match_etag);
   }
 
 /*
@@ -379,12 +412,14 @@ class DocumentDB
    *
    * @link http://msdn.microsoft.com/en-us/library/azure/dn803945.aspx
    * @access public
+   * @param string $if_none_match       Returns the ressource if the server ETag value does not match request ETag value, else "304 Not modified"
    * @return string JSON response
    */
-  public function listDatabases()
+  public function listDatabases($if_none_match=null)
   {
     $headers = $this->getAuthHeaders('GET', 'dbs', '');
     $headers[] = 'Content-Length:0';
+    if($if_none_match != null) $headers[] = 'If-None-Match:'.$if_none_match;
     return $this->request("/dbs", "GET", $headers);
   }
 
@@ -393,13 +428,15 @@ class DocumentDB
    *
    * @link http://msdn.microsoft.com/en-us/library/azure/dn803937.aspx
    * @access public
-   * @param string $rid_id Resource ID
+   * @param string $rid_id              Resource ID
+   * @param string $if_none_match       Returns the ressource if the server ETag value does not match request ETag value, else "304 Not modified"
    * @return string JSON response
    */
-  public function getDatabase($rid_id)
+  public function getDatabase($rid_id, $if_none_match=null)
   {
     $headers = $this->getAuthHeaders('GET', 'dbs', $rid_id);
     $headers[] = 'Content-Length:0';
+    if($if_none_match != null) $headers[] = 'If-None-Match:'.$if_none_match;
     return $this->request("/dbs/" . $rid_id, "GET", $headers);
   }
 
@@ -423,14 +460,16 @@ class DocumentDB
    *
    * @link http://msdn.microsoft.com/en-us/library/azure/dn803943.aspx
    * @access public
-   * @param string $rid_id Resource ID
-   * @param string $json   JSON request
+   * @param string $rid_id          Resource ID
+   * @param string $json            JSON request
+   * @param string $if_match_etag   Resource is updated if server ETag value matches request ETag value, else operation is rejected with "HTTP 412 Precondition failure"
    * @return string JSON response
    */
-  public function replaceDatabase($rid_id, $json)
+  public function replaceDatabase($rid_id, $json, $if_match_etag=null)
   {
     $headers = $this->getAuthHeaders('PUT', 'dbs', $rid_id);
     $headers[] = 'Content-Length:' . strlen($json);
+    if($if_match_etag != null) $headers[] = 'If-Match:'.$if_match_etag;
     return $this->request("/dbs/" . $rid_id, "PUT", $headers, $json);
   }
 
@@ -439,13 +478,15 @@ class DocumentDB
    *
    * @link http://msdn.microsoft.com/en-us/library/azure/dn803942.aspx
    * @access public
-   * @param string $rid_id Resource ID
+   * @param string $rid_id          Resource ID
+   * @param string $if_match_etag   Resource is updated if server ETag value matches request ETag value, else operation is rejected with "HTTP 412 Precondition failure"
    * @return string JSON response
    */
-  public function deleteDatabase($rid_id)
+  public function deleteDatabase($rid_id, $if_match_etag=null)
   {
     $headers = $this->getAuthHeaders('DELETE', 'dbs', $rid_id);
     $headers[] = 'Content-Length:0';
+    if($if_match_etag != null) $headers[] = 'If-Match:'.$if_match_etag;
     return $this->request("/dbs/" . $rid_id, "DELETE", $headers);
   }
 
@@ -454,13 +495,15 @@ class DocumentDB
    *
    * @link http://msdn.microsoft.com/en-us/library/azure/dn803958.aspx
    * @access public
-   * @param string $rid_id Resource ID
+   * @param string $rid_id              Resource ID
+   * @param string $if_none_match       Returns the ressource if the server ETag value does not match request ETag value, else "304 Not modified"
    * @return string JSON response
    */
-  public function listUsers($rid_id)
+  public function listUsers($rid_id, $if_none_match=null)
   {
     $headers = $this->getAuthHeaders('GET', 'users', $rid_id);
     $headers[] = 'Content-Length:0';
+    if($if_none_match != null) $headers[] = 'If-None-Match:'.$if_none_match;
     return $this->request("/dbs/" . $rid_id . "/users", "GET", $headers);
   }
 
@@ -469,14 +512,16 @@ class DocumentDB
    *
    * @link http://msdn.microsoft.com/en-us/library/azure/dn803949.aspx
    * @access public
-   * @param string $rid_id   Resource ID
-   * @param string $rid_user Resource User ID
+   * @param string $rid_id              Resource ID
+   * @param string $rid_user            Resource User ID
+   * @param string $if_none_match       Returns the ressource if the server ETag value does not match request ETag value, else "304 Not modified"
    * @return string JSON response
    */
-  public function getUser($rid_id, $rid_user)
+  public function getUser($rid_id, $rid_user, $if_none_match=null)
   {
     $headers = $this->getAuthHeaders('GET', 'users', $rid_user);
     $headers[] = 'Content-Length:0';
+    if($if_none_match != null) $headers[] = 'If-None-Match:'.$if_none_match;
     return $this->request("/dbs/" . $rid_id . "/users/" . $rid_user, "GET", $headers);
   }
 
@@ -504,12 +549,14 @@ class DocumentDB
    * @param string $rid_id   Resource ID
    * @param string $rid_user Resource User ID
    * @param string $json     JSON request
+   * @param string $if_match_etag   Resource is updated if server ETag value matches request ETag value, else operation is rejected with "HTTP 412 Precondition failure"
    * @return string JSON response
    */
-  public function replaceUser($rid_id, $rid_user, $json)
+  public function replaceUser($rid_id, $rid_user, $json, $if_match_etag=null)
   {
     $headers = $this->getAuthHeaders('PUT', 'users', $rid_user);
     $headers[] = 'Content-Length:' . strlen($json);
+    if($if_match_etag != null) $headers[] = 'If-Match:'.$if_match_etag;
     return $this->request("/dbs/" . $rid_id . "/users/" . $rid_user, "PUT", $headers, $json);
   }
 
@@ -518,14 +565,16 @@ class DocumentDB
    *
    * @link http://msdn.microsoft.com/en-us/library/azure/dn803953.aspx
    * @access public
-   * @param string $rid_id   Resource ID
-   * @param string $rid_user Resource User ID
+   * @param string $rid_id          Resource ID
+   * @param string $rid_user        Resource User ID
+   * @param string $if_match_etag   Resource is updated if server ETag value matches request ETag value, else operation is rejected with "HTTP 412 Precondition failure"
    * @return string JSON response
    */
-  public function deleteUser($rid_id, $rid_user)
+  public function deleteUser($rid_id, $rid_user, $if_match_etag=null)
   {
     $headers = $this->getAuthHeaders('DELETE', 'users', $rid_user);
     $headers[] = 'Content-Length:0';
+    if($if_match_etag != null) $headers[] = 'If-Match:'.$if_match_etag;
     return $this->request("/dbs/" . $rid_id . "/users/" . $rid_user, "DELETE", $headers);
   }
 
@@ -534,13 +583,15 @@ class DocumentDB
    *
    * @link http://msdn.microsoft.com/en-us/library/azure/dn803935.aspx
    * @access public
-   * @param string $rid_id Resource ID
+   * @param string $rid_id              Resource ID
+   * @param string $if_none_match       Returns the ressource if the server ETag value does not match request ETag value, else "304 Not modified"
    * @return string JSON response
    */
-  public function listCollections($rid_id)
+  public function listCollections($rid_id, $if_none_match=null)
   {
     $headers = $this->getAuthHeaders('GET', 'colls', $rid_id);
     $headers[] = 'Content-Length:0';
+    if($if_none_match != null) $headers[] = 'If-None-Match:'.$if_none_match;
     return $this->request("/dbs/" . $rid_id . "/colls", "GET", $headers);
   }
 
@@ -549,14 +600,16 @@ class DocumentDB
    *
    * @link http://msdn.microsoft.com/en-us/library/azure/dn803951.aspx
    * @access public
-   * @param string $rid_id  Resource ID
-   * @param string $rid_col Resource Collection ID
+   * @param string $rid_id              Resource ID
+   * @param string $rid_col             Resource Collection ID
+   * @param string $if_none_match       Returns the ressource if the server ETag value does not match request ETag value, else "304 Not modified"
    * @return string JSON response
    */
-  public function getCollection($rid_id, $rid_col)
+  public function getCollection($rid_id, $rid_col, $if_none_match=null)
   {
     $headers = $this->getAuthHeaders('GET', 'colls', $rid_col);
     $headers[] = 'Content-Length:0';
+    if($if_none_match != null) $headers[] = 'If-None-Match:'.$if_none_match;
     return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col, "GET", $headers);
   }
 
@@ -581,14 +634,16 @@ class DocumentDB
    *
    * @link http://msdn.microsoft.com/en-us/library/azure/dn803953.aspx
    * @access public
-   * @param string $rid_id  Resource ID
-   * @param string $rid_col Resource Collection ID
+   * @param string $rid_id          Resource ID
+   * @param string $rid_col         Resource Collection ID
+   * @param string $if_match_etag   Resource is updated if server ETag value matches request ETag value, else operation is rejected with "HTTP 412 Precondition failure"
    * @return string JSON response
    */
-  public function deleteCollection($rid_id, $rid_col)
+  public function deleteCollection($rid_id, $rid_col, $if_match_etag=null)
   {
     $headers = $this->getAuthHeaders('DELETE', 'colls', $rid_col);
     $headers[] = 'Content-Length:0';
+    if($if_match_etag != null) $headers[] = 'If-Match:'.$if_match_etag;
     return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col, "DELETE", $headers);
   }
 
@@ -597,14 +652,16 @@ class DocumentDB
    *
    * @link http://msdn.microsoft.com/en-us/library/azure/dn803955.aspx
    * @access public
-   * @param string $rid_id Resource ID
-   * @param string $rid_colResource Collection ID
+   * @param string $rid_id Resource     ID
+   * @param string $rid_colResource     Collection ID
+   * @param string $if_none_match       Returns the ressource if the server ETag value does not match request ETag value, else "304 Not modified"
    * @return string JSON response
    */
-  public function listDocuments($rid_id, $rid_col)
+  public function listDocuments($rid_id, $rid_col, $if_none_match=null)
   {
     $headers = $this->getAuthHeaders('GET', 'docs', $rid_col);
     $headers[] = 'Content-Length:0';
+    if($if_none_match != null) $headers[] = 'If-None-Match:'.$if_none_match;
     return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs", "GET", $headers);
   }
 
@@ -613,15 +670,17 @@ class DocumentDB
    *
    * @link http://msdn.microsoft.com/en-us/library/azure/dn803957.aspx
    * @access public
-   * @param string $rid_id  Resource ID
-   * @param string $rid_col Resource Collection ID
-   * @param string $rid_doc Resource Doc ID
+   * @param string $rid_id              Resource ID
+   * @param string $rid_col             Resource Collection ID
+   * @param string $rid_doc             Resource Doc ID
+   * @param string $if_none_match       Returns the ressource if the server ETag value does not match request ETag value, else "304 Not modified"
    * @return string JSON response
    */
-  public function getDocument($rid_id, $rid_col, $rid_doc)
+  public function getDocument($rid_id, $rid_col, $rid_doc, $if_none_match=null)
   {
     $headers = $this->getAuthHeaders('GET', 'docs', $rid_doc);
     $headers[] = 'Content-Length:0';
+    if($if_none_match != null) $headers[] = 'If-None-Match:'.$if_none_match;
     $options = array(
       CURLOPT_HTTPHEADER => $headers,
       CURLOPT_HTTPGET => true,
@@ -637,12 +696,14 @@ class DocumentDB
    * @param string $rid_id  Resource ID
    * @param string $rid_col Resource Collection ID
    * @param string $json    JSON request
+   * @param bool   $upsert  true: create or update the document, false(default): create if not exists
    * @return string JSON response
    */
-  public function createDocument($rid_id, $rid_col, $json)
+  public function createDocument($rid_id, $rid_col, $json, $upsert=false)
   {
     $headers = $this->getAuthHeaders('POST', 'docs', $rid_col);
     $headers[] = 'Content-Length:' . strlen($json);
+    if($upsert) $headers[] = 'x-ms-documentdb-is-upsert:True';
     return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs", "POST", $headers, $json);
   }
 
@@ -651,16 +712,18 @@ class DocumentDB
    *
    * @link http://msdn.microsoft.com/en-us/library/azure/dn803947.aspx
    * @access public
-   * @param string $rid_id  Resource ID
-   * @param string $rid_col Resource Collection ID
-   * @param string $rid_doc Resource Doc ID
-   * @param string $json    JSON request
+   * @param string $rid_id          Resource ID
+   * @param string $rid_col         Resource Collection ID
+   * @param string $rid_doc         Resource Doc ID
+   * @param string $json            JSON request
+   * @param string $if_match_etag   Resource is updated if server ETag value matches request ETag value, else operation is rejected with "HTTP 412 Precondition failure"
    * @return string JSON response
    */
-  public function replaceDocument($rid_id, $rid_col, $rid_doc, $json)
+  public function replaceDocument($rid_id, $rid_col, $rid_doc, $json, $if_match_etag=null)
   {
     $headers = $this->getAuthHeaders('PUT', 'docs', $rid_doc);
     $headers[] = 'Content-Length:' . strlen($json);
+    if($if_match_etag != null) $headers[] = 'If-Match:'.$if_match_etag;
     return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs/" . $rid_doc, "PUT", $headers, $json);
   }
 
@@ -669,15 +732,17 @@ class DocumentDB
    *
    * @link http://msdn.microsoft.com/en-us/library/azure/dn803952.aspx
    * @access public
-   * @param string $rid_id  Resource ID
-   * @param string $rid_col Resource Collection ID
-   * @param string $rid_doc Resource Doc ID
+   * @param string $rid_id          Resource ID
+   * @param string $rid_col         Resource Collection ID
+   * @param string $rid_doc         Resource Doc ID
+   * @param string $if_match_etag   Resource is updated if server ETag value matches request ETag value, else operation is rejected with "HTTP 412 Precondition failure"
    * @return string JSON response
    */
-  public function deleteDocument($rid_id, $rid_col, $rid_doc)
+  public function deleteDocument($rid_id, $rid_col, $rid_doc, $if_match_etag=null)
   {
     $headers = $this->getAuthHeaders('DELETE', 'docs', $rid_doc);
     $headers[] = 'Content-Length:0';
+    if($if_match_etag != null) $headers[] = 'If-Match:'.$if_match_etag;
     return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs/" . $rid_doc, "DELETE", $headers);
   }
 
@@ -686,15 +751,17 @@ class DocumentDB
    *
    * @link http://
    * @access public
-   * @param string $rid_id Resource ID
-   * @param string $rid_colResource Collection ID
-   * @param string $rid_doc Resource Doc ID
+   * @param string $rid_id Resource     ID
+   * @param string $rid_colResource     Collection ID
+   * @param string $rid_doc             Resource Doc ID
+   * @param string $if_none_match       Returns the ressource if the server ETag value does not match request ETag value, else "304 Not modified"
    * @return string JSON response
    */
-  public function listAttachments($rid_id, $rid_col, $rid_doc)
+  public function listAttachments($rid_id, $rid_col, $rid_doc, $if_none_match=null)
   {
     $headers = $this->getAuthHeaders('GET', 'attachments', $rid_doc);
     $headers[] = 'Content-Length:0';
+    if($if_none_match != null) $headers[] = 'If-None-Match:'.$if_none_match;
     return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs/" . $rid_doc . "/attachments", "GET", $headers);
   }
 
@@ -703,16 +770,18 @@ class DocumentDB
    *
    * @link http://
    * @access public
-   * @param string $rid_id  Resource ID
-   * @param string $rid_col Resource Collection ID
-   * @param string $rid_doc Resource Doc ID
-   * @param string $rid_at  Resource Attachment ID
+   * @param string $rid_id              Resource ID
+   * @param string $rid_col             Resource Collection ID
+   * @param string $rid_doc             Resource Doc ID
+   * @param string $rid_at              Resource Attachment ID
+   * @param string $if_none_match       Returns the ressource if the server ETag value does not match request ETag value, else "304 Not modified"
    * @return string JSON response
    */
-  public function getAttachment($rid_id, $rid_col, $rid_doc, $rid_at)
+  public function getAttachment($rid_id, $rid_col, $rid_doc, $rid_at, $if_none_match=null)
   {
     $headers = $this->getAuthHeaders('GET', 'attachments', $rid_at);
     $headers[] = 'Content-Length:0';
+    if($if_none_match != null) $headers[] = 'If-None-Match:'.$if_none_match;
     return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs/" . $rid_doc . "/attachments/" . $rid_at, "GET", $headers);
   }
 
@@ -750,14 +819,16 @@ class DocumentDB
    * @param string $content_type Content-Type of Media
    * @param string $filename     Attachement file name
    * @param string $file         URL encoded Attachement file (Raw Media)
+   * @param string $if_match_etag   Resource is updated if server ETag value matches request ETag value, else operation is rejected with "HTTP 412 Precondition failure"
    * @return string JSON response
    */
-  public function replaceAttachment($rid_id, $rid_col, $rid_doc, $rid_at, $content_type, $filename, $file)
+  public function replaceAttachment($rid_id, $rid_col, $rid_doc, $rid_at, $content_type, $filename, $file, $if_match_etag=null)
   {
     $headers = $this->getAuthHeaders('PUT', 'attachments', $rid_at);
     $headers[] = 'Content-Length:' . strlen($file);
     $headers[] = 'Content-Type:' . $content_type;
     $headers[] = 'Slug:' . urlencode($filename);
+    if($if_match_etag != null) $headers[] = 'If-Match:'.$if_match_etag;
     return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs/" . $rid_doc . "/attachments/" . $rid_at, "PUT", $headers, $file);
   }
 
@@ -766,16 +837,18 @@ class DocumentDB
    *
    * @link http://
    * @access public
-   * @param string $rid_id  Resource ID
-   * @param string $rid_col Resource Collection ID
-   * @param string $rid_doc Resource Doc ID
-   * @param string $rid_at  Resource Attachment ID
+   * @param string $rid_id          Resource ID
+   * @param string $rid_col         Resource Collection ID
+   * @param string $rid_doc         Resource Doc ID
+   * @param string $rid_at          Resource Attachment ID
+   * @param string $if_match_etag   Resource is updated if server ETag value matches request ETag value, else operation is rejected with "HTTP 412 Precondition failure"
    * @return string JSON response
    */
-  public function deleteAttachment($rid_id, $rid_col, $rid_doc, $rid_at)
+  public function deleteAttachment($rid_id, $rid_col, $rid_doc, $rid_at, $if_match_etag=null)
   {
     $headers = $this->getAuthHeaders('DELETE', 'attachments', $rid_at);
     $headers[] = 'Content-Length:0';
+    if($if_match_etag != null) $headers[] = 'If-Match:'.$if_match_etag;
     return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs/" . $rid_doc . "/attachments/" . $rid_at, "DELETE", $headers);
   }
 
@@ -784,12 +857,14 @@ class DocumentDB
    *
    * @link http://
    * @access public
+   * @param string $if_none_match       Returns the ressource if the server ETag value does not match request ETag value, else "304 Not modified"
    * @return string JSON response
    */
-  public function listOffers()
+  public function listOffers($if_none_match=null)
   {
     $headers = $this->getAuthHeaders('GET', 'offers', '');
     $headers[] = 'Content-Length:0';
+    if($if_none_match != null) $headers[] = 'If-None-Match:'.$if_none_match;
     return $this->request("/offers", "GET", $headers);
   }
 
@@ -798,13 +873,15 @@ class DocumentDB
    *
    * @link http://
    * @access public
-   * @param string $rid  Resource ID
+   * @param string $rid                 Resource ID
+   * @param string $if_none_match       Returns the ressource if the server ETag value does not match request ETag value, else "304 Not modified"
    * @return string JSON response
    */
-  public function getOffer($rid)
+  public function getOffer($rid, $if_none_match=null)
   {
     $headers = $this->getAuthHeaders('GET', 'offers', $rid);
     $headers[] = 'Content-Length:0';
+    if($if_none_match != null) $headers[] = 'If-None-Match:'.$if_none_match;
     return $this->request("/offers/" . $rid, "GET", $headers);
   }
 
@@ -816,11 +893,13 @@ class DocumentDB
    * @param string $rid  Resource ID
    * @param string $json    JSON request
    * @return string JSON response
+   * @param string $if_match_etag   Resource is updated if server ETag value matches request ETag value, else operation is rejected with "HTTP 412 Precondition failure"
    */
-  public function replaceOffer($rid, $json)
+  public function replaceOffer($rid, $json, $if_match_etag=null)
   {
     $headers = $this->getAuthHeaders('PUT', 'offers', $rid);
     $headers[] = 'Content-Length:' . strlen($json);
+    if($if_match_etag != null) $headers[] = 'If-Match:'.$if_match_etag;
     return $this->request("/offers/" . $rid, "PUT", $headers, $json);
   }
 
@@ -846,14 +925,16 @@ class DocumentDB
    *
    * @link http://msdn.microsoft.com/en-us/library/azure/dn803949.aspx
    * @access public
-   * @param string $rid_id   Resource ID
-   * @param string $rid_user Resource User ID
+   * @param string $rid_id              Resource ID
+   * @param string $rid_user            Resource User ID
+   * @param string $if_none_match       Returns the ressource if the server ETag value does not match request ETag value, else "304 Not modified"
    * @return string JSON response
    */
-  public function listPermissions($rid_id, $rid_user)
+  public function listPermissions($rid_id, $rid_user, $if_none_match=null)
   {
     $headers = $this->getAuthHeaders('GET', 'permissions', $rid_user);
     $headers[] = 'Content-Length:0';
+    if($if_none_match != null) $headers[] = 'If-None-Match:'.$if_none_match;
     return $this->request("/dbs/" . $rid_id . "/users/" . $rid_user . "/permissions", "GET", $headers);
   }
 
@@ -879,15 +960,17 @@ class DocumentDB
    *
    * @link http://msdn.microsoft.com/en-us/library/azure/dn803949.aspx
    * @access public
-   * @param string $rid_id   Resource ID
-   * @param string $rid_user Resource User ID
-   * @param string $rid_permission Resource Permission ID
+   * @param string $rid_id              Resource ID
+   * @param string $rid_user            Resource User ID
+   * @param string $rid_permission      Resource Permission ID
+   * @param string $if_none_match       Returns the ressource if the server ETag value does not match request ETag value, else "304 Not modified"
    * @return string JSON response
    */
-  public function getPermission($rid_id, $rid_user, $rid_permission)
+  public function getPermission($rid_id, $rid_user, $rid_permission, $if_none_match=null)
   {
     $headers = $this->getAuthHeaders('GET', 'permissions', $rid_permission);
     $headers[] = 'Content-Length:0';
+    if($if_none_match != null) $headers[] = 'If-None-Match:'.$if_none_match;
     return $this->request("/dbs/" . $rid_id . "/users/" . $rid_user . "/permissions/" . $rid_permission, "GET", $headers);
   }
 
@@ -896,16 +979,18 @@ class DocumentDB
    *
    * @link http://msdn.microsoft.com/en-us/library/azure/dn803949.aspx
    * @access public
-   * @param string $rid_id   Resource ID
-   * @param string $rid_user Resource User ID
-   * @param string $rid_permission Resource Permission ID
-   * @param string $json   JSON request
+   * @param string $rid_id          Resource ID
+   * @param string $rid_user        Resource User ID
+   * @param string $rid_permission  Resource Permission ID
+   * @param string $json            JSON request
+   * @param string $if_match_etag   Resource is updated if server ETag value matches request ETag value, else operation is rejected with "HTTP 412 Precondition failure"
    * @return string JSON response
    */
-  public function replacePermission($rid_id, $rid_user, $rid_permission, $json)
+  public function replacePermission($rid_id, $rid_user, $rid_permission, $json, $if_match_etag=null)
   {
     $headers = $this->getAuthHeaders('PUT', 'permissions', $rid_permission);
     $headers[] = 'Content-Length:' . strlen($json);
+    if($if_match_etag != null) $headers[] = 'If-Match:'.$if_match_etag;
     return $this->request("/dbs/" . $rid_id . "/users/" . $rid_user . "/permissions/" . $rid_permission, "PUT", $headers, $json);
   }
 
@@ -914,15 +999,17 @@ class DocumentDB
    *
    * @link http://msdn.microsoft.com/en-us/library/azure/dn803949.aspx
    * @access public
-   * @param string $rid_id   Resource ID
-   * @param string $rid_user Resource User ID
-   * @param string $rid_permission Resource Permission ID
+   * @param string $rid_id          Resource ID
+   * @param string $rid_user        Resource User ID
+   * @param string $rid_permission  Resource Permission ID
+   * @param string $if_match_etag   Resource is updated if server ETag value matches request ETag value, else operation is rejected with "HTTP 412 Precondition failure"
    * @return string JSON response
    */
-  public function deletePermission($rid_id, $rid_user, $rid_permission)
+  public function deletePermission($rid_id, $rid_user, $rid_permission, $if_match_etag=null)
   {
     $headers = $this->getAuthHeaders('DELETE', 'permissions', $rid_permission);
     $headers[] = 'Content-Length:0';
+    if($if_match_etag != null) $headers[] = 'If-Match:'.$if_match_etag;
     return $this->request("/dbs/" . $rid_id . "/users/" . $rid_user . "/permissions/" . $rid_permission, "DELETE", $headers);
   }
 
@@ -931,14 +1018,16 @@ class DocumentDB
    *
    * @link http://
    * @access public
-   * @param string $rid_id Resource ID
-   * @param string $rid_colResource Collection ID
+   * @param string $rid_id Resource     ID
+   * @param string $rid_colResource     Collection ID
+   * @param string $if_none_match       Returns the ressource if the server ETag value does not match request ETag value, else "304 Not modified"
    * @return string JSON response
    */
-  public function listStoredProcedures($rid_id, $rid_col)
+  public function listStoredProcedures($rid_id, $rid_col, $if_none_match=null)
   {
     $headers = $this->getAuthHeaders('GET', 'sprocs', $rid_col);
     $headers[] = 'Content-Length:0';
+    if($if_none_match != null) $headers[] = 'If-None-Match:'.$if_none_match;
     return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/sprocs", "GET", $headers);
   }
 
@@ -982,16 +1071,18 @@ class DocumentDB
    *
    * @link http://
    * @access public
-   * @param string $rid_id       Resource ID
-   * @param string $rid_col      Resource Collection ID
-   * @param string $rid_sproc  Resource ID of Stored Procedurea
-   * @param string $json    Parameters
+   * @param string $rid_id          Resource ID
+   * @param string $rid_col         Resource Collection ID
+   * @param string $rid_sproc       Resource ID of Stored Procedurea
+   * @param string $json            Parameters
+   * @param string $if_match_etag   Resource is updated if server ETag value matches request ETag value, else operation is rejected with "HTTP 412 Precondition failure"
    * @return string JSON response
    */
-  public function replaceStoredProcedure($rid_id, $rid_col, $rid_sproc, $json)
+  public function replaceStoredProcedure($rid_id, $rid_col, $rid_sproc, $json, $if_match_etag=null)
   {
     $headers = $this->getAuthHeaders('PUT', 'sprocs', $rid_sproc);
     $headers[] = 'Content-Length:' . strlen($json);
+    if($if_match_etag != null) $headers[] = 'If-Match:'.$if_match_etag;
     return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/sprocs/" . $rid_sproc, "PUT", $headers, $json);
   }
 
@@ -1000,15 +1091,17 @@ class DocumentDB
    *
    * @link http://
    * @access public
-   * @param string $rid_id  Resource ID
-   * @param string $rid_col Resource Collection ID
-   * @param string $rid_sproc  Resource ID of Stored Procedurea
+   * @param string $rid_id          Resource ID
+   * @param string $rid_col         Resource Collection ID
+   * @param string $rid_sproc       Resource ID of Stored Procedurea
+   * @param string $if_match_etag   Resource is updated if server ETag value matches request ETag value, else operation is rejected with "HTTP 412 Precondition failure"
    * @return string JSON response
    */
-  public function deleteStoredProcedure($rid_id, $rid_col, $rid_sproc)
+  public function deleteStoredProcedure($rid_id, $rid_col, $rid_sproc, $if_match_etag=null)
   {
     $headers = $this->getAuthHeaders('DELETE', 'sprocs', $rid_sproc);
     $headers[] = 'Content-Length:0';
+    if($if_match_etag != null) $headers[] = 'If-Match:'.$if_match_etag;
     return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/sprocs/" . $rid_sproc, "DELETE", $headers);
   }
 
@@ -1017,14 +1110,16 @@ class DocumentDB
    *
    * @link http://
    * @access public
-   * @param string $rid_id Resource ID
-   * @param string $rid_colResource Collection ID
+   * @param string $rid_id Resource     ID
+   * @param string $rid_colResource     Collection ID
+   * @param string $if_none_match       Returns the ressource if the server ETag value does not match request ETag value, else "304 Not modified"
    * @return string JSON response
    */
-  public function listUserDefinedFunctions($rid_id, $rid_col)
+  public function listUserDefinedFunctions($rid_id, $rid_col, $if_none_match=null)
   {
     $headers = $this->getAuthHeaders('GET', 'udfs', $rid_col);
     $headers[] = 'Content-Length:0';
+    if($if_none_match != null) $headers[] = 'If-None-Match:'.$if_none_match;
     return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/udfs", "GET", $headers);
   }
 
@@ -1050,16 +1145,18 @@ class DocumentDB
    *
    * @link http://
    * @access public
-   * @param string $rid_id       Resource ID
-   * @param string $rid_col      Resource Collection ID
-   * @param string $rid_udf      Resource ID of User Defined Function
-   * @param string $json    Parameters
+   * @param string $rid_id          Resource ID
+   * @param string $rid_col         Resource Collection ID
+   * @param string $rid_udf         Resource ID of User Defined Function
+   * @param string $json            Parameters
+   * @param string $if_match_etag   Resource is updated if server ETag value matches request ETag value, else operation is rejected with "HTTP 412 Precondition failure"
    * @return string JSON response
    */
-  public function replaceUserDefinedFunction($rid_id, $rid_col, $rid_udf, $json)
+  public function replaceUserDefinedFunction($rid_id, $rid_col, $rid_udf, $json, $if_match_etag=null)
   {
     $headers = $this->getAuthHeaders('PUT', 'udfs', $rid_udf);
     $headers[] = 'Content-Length:' . strlen($json);
+    if($if_match_etag != null) $headers[] = 'If-Match:'.$if_match_etag;
     return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/udfs/" . $rid_udf, "PUT", $headers, $json);
   }
 
@@ -1068,15 +1165,17 @@ class DocumentDB
    *
    * @link http://
    * @access public
-   * @param string $rid_id  Resource ID
-   * @param string $rid_col Resource Collection ID
-   * @param string $rid_udf  Resource ID of User Defined Function
+   * @param string $rid_id          Resource ID
+   * @param string $rid_col         Resource Collection ID
+   * @param string $rid_udf         Resource ID of User Defined Function
+   * @param string $if_match_etag   Resource is updated if server ETag value matches request ETag value, else operation is rejected with "HTTP 412 Precondition failure"
    * @return string JSON response
    */
-  public function deleteUserDefinedFunction($rid_id, $rid_col, $rid_udf)
+  public function deleteUserDefinedFunction($rid_id, $rid_col, $rid_udf, $if_match_etag=null)
   {
     $headers = $this->getAuthHeaders('DELETE', 'udfs', $rid_udf);
     $headers[] = 'Content-Length:0';
+    if($if_match_etag != null) $headers[] = 'If-Match:'.$if_match_etag;
     return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/udfs/" . $rid_udf, "DELETE", $headers);
   }
 
@@ -1085,14 +1184,16 @@ class DocumentDB
    *
    * @link http://
    * @access public
-   * @param string $rid_id Resource ID
-   * @param string $rid_colResource Collection ID
+   * @param string $rid_id Resource     ID
+   * @param string $rid_colResource     Collection ID
+   * @param string $if_none_match       Returns the ressource if the server ETag value does not match request ETag value, else "304 Not modified"
    * @return string JSON response
    */
-  public function listTriggers($rid_id, $rid_col)
+  public function listTriggers($rid_id, $rid_col, $if_none_match=null)
   {
     $headers = $this->getAuthHeaders('GET', 'triggers', $rid_col);
     $headers[] = 'Content-Length:0';
+    if($if_none_match != null) $headers[] = 'If-None-Match:'.$if_none_match;
     return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/triggers", "GET", $headers);
   }
 
@@ -1122,12 +1223,14 @@ class DocumentDB
    * @param string $rid_col      Resource Collection ID
    * @param string $rid_trigger      Resource ID of Trigger
    * @param string $json    Parameters
+   * @param string $if_match_etag   Resource is updated if server ETag value matches request ETag value, else operation is rejected with "HTTP 412 Precondition failure"
    * @return string JSON response
    */
-  public function replaceTrigger($rid_id, $rid_col, $rid_trigger, $json)
+  public function replaceTrigger($rid_id, $rid_col, $rid_trigger, $json, $if_match_etag=null)
   {
     $headers = $this->getAuthHeaders('PUT', 'triggers', $rid_trigger);
     $headers[] = 'Content-Length:' . strlen($json);
+    if($if_match_etag != null) $headers[] = 'If-Match:'.$if_match_etag;
     return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/triggers/" . $rid_trigger, "PUT", $headers, $json);
   }
 
@@ -1136,15 +1239,17 @@ class DocumentDB
    *
    * @link http://
    * @access public
-   * @param string $rid_id  Resource ID
-   * @param string $rid_col Resource Collection ID
-   * @param string $rid_trigger  Resource ID of Trigger
+   * @param string $rid_id          Resource ID
+   * @param string $rid_col         Resource Collection ID
+   * @param string $rid_trigger     Resource ID of Trigger
+   * @param string $if_match_etag   Resource is updated if server ETag value matches request ETag value, else operation is rejected with "HTTP 412 Precondition failure"
    * @return string JSON response
    */
-  public function deleteTrigger($rid_id, $rid_col, $rid_trigger)
+  public function deleteTrigger($rid_id, $rid_col, $rid_trigger, $if_match_etag=null)
   {
     $headers = $this->getAuthHeaders('DELETE', 'triggers', $rid_trigger);
     $headers[] = 'Content-Length:0';
+    if($if_match_etag != null) $headers[] = 'If-Match:'.$if_match_etag;
     return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/triggers/" . $rid_trigger, "DELETE", $headers);
   }
 
