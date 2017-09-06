@@ -282,7 +282,7 @@ class DocumentDB
     $request = new Http_Request2($this->host . $path);
     
     if($this->session_token != null) 
-        $headers[] = 'x-ms-session-token: '.$this->session_token;
+        $headers[] = 'x-ms-session-token:'.$this->session_token;
     
     $request->setHeader($headers);
     
@@ -303,8 +303,6 @@ class DocumentDB
       $response = $request->send();
       
       $this->session_token = $response->getHeader('x-ms-session-token');
-      
-      echo 'x-ms-session-token: '.$this->session_token."\n";
       
       return $response->getBody();
     }
