@@ -48,11 +48,9 @@ class DocumentDBDatabase
   public function selectCollection($col_name)
   {
     $rid_col = false;
-    
     $response = $this->document_db->listCollections($this->rid_db);
-    $object = $response['data'];
     
-    $col_list = $object->DocumentCollections;
+    $col_list = $response['data']['DocumentCollections'];
     for ($i=0; $i<count($col_list); $i++) {
       if ($col_list[$i]->id === $col_name) {
         $rid_col = $col_list[$i]->_rid;
@@ -60,9 +58,7 @@ class DocumentDBDatabase
     }
     if (!$rid_col) {
       $response = $this->document_db->createCollection($this->rid_db, '{"id":"' . $col_name . '"}');
-      $object = $response['data'];
-    
-      $rid_col = $object->_rid;
+      $rid_col = $response['data']['_rid'];
     }
     if ($rid_col) {
       return new DocumentDBCollection($this->document_db, $this->rid_db, $rid_col);
@@ -89,8 +85,8 @@ class DocumentDBCollection
    *
    * @access public
    * @param DocumentDB $document_db DocumentDB object
-   * @param string $rid_db Database ID
-   * @param string $rid_col Collection ID
+   * @param string $rid_db          Database ID
+   * @param string $rid_col         Collection ID
    */
   public function __construct($document_db, $rid_db, $rid_col)
   {
@@ -346,7 +342,7 @@ class DocumentDB
       $response = array(
         'status' => $http_response->getStatus(),
         'body'   => $http_response->getBody(),
-        'data'   => json_decode($http_response->getBody()),
+        'data'   => json_decode($http_response->getBody(), true),
         'error'  => json_last_error()
       );
     }
@@ -376,11 +372,9 @@ class DocumentDB
   public function selectDB($db_name)
   {
     $rid_db   = false;
-    
     $response = $this->listDatabases();
-    $object = $response['data'];
     
-    $db_list = $object->Databases;
+    $db_list = $response['data']['Databases'];
     for ($i=0; $i<count($db_list); $i++) {
       if ($db_list[$i]->id === $db_name) {
         $rid_db = $db_list[$i]->_rid;
@@ -389,9 +383,7 @@ class DocumentDB
     
     if (!$rid_db) {  
       $response = $this->createDatabase('{"id":"' . $db_name . '"}');
-      $object = $response['data'];
-
-      $rid_db = $object->_rid;
+      $rid_db = $response['data']['_rid'];
     }
     
     if ($rid_db) {
