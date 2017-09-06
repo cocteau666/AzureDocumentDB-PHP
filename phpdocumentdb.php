@@ -48,7 +48,11 @@ class DocumentDBDatabase
   public function selectCollection($col_name)
   {
     $rid_col = false;
-    $object = json_decode($this->document_db->listCollections($this->rid_db));
+    
+    $response = $this->document_db->listCollections($this->rid_db);
+    if($response['status'] != 200 || $response['data'] == null) return $response;
+    $object = $response['data'];
+    
     $col_list = $object->DocumentCollections;
     for ($i=0; $i<count($col_list); $i++) {
       if ($col_list[$i]->id === $col_name) {
@@ -56,13 +60,21 @@ class DocumentDBDatabase
       }
     }
     if (!$rid_col) {
-      $object = json_decode($this->document_db->createCollection($this->rid_db, '{"id":"' . $col_name . '"}'));
+      $response = $this->document_db->createCollection($this->rid_db, '{"id":"' . $col_name . '"}');
+      if($response['status'] != 200 || $response['data'] == null) return $response;
+      $object = $response['data'];
+    
       $rid_col = $object->_rid;
     }
     if ($rid_col) {
       return new DocumentDBCollection($this->document_db, $this->rid_db, $rid_col);
     } else {
-      return false;
+      return array(
+        'status' => 0,
+        'body'   => '',
+        'data'   => null,
+        'error'  => new Exception('This should never happen')
+      );
     }
   }
 
@@ -116,7 +128,6 @@ class DocumentDBCollection
   /**
    * getDocument
    *
-   * @link http://msdn.microsoft.com/en-us/library/azure/dn803957.aspx
    * @access public
    * @param string $rid_doc             Resource Doc ID
    * @param string $if_none_match       Returns the ressource if the server ETag value does not match request ETag value, else "304 Not modified"
@@ -130,10 +141,7 @@ class DocumentDBCollection
   /**
    * replaceDocument
    *
-   * @link http://msdn.microsoft.com/en-us/library/azure/dn803947.aspx
    * @access public
-   * @param string $rid_id          Resource ID
-   * @param string $rid_col         Resource Collection ID
    * @param string $rid_doc         Resource Doc ID
    * @param string $json            JSON request
    * @param string $if_match_etag   Resource is updated if server ETag value matches request ETag value, else operation is rejected with "HTTP 412 Precondition failure"
@@ -244,7 +252,6 @@ class DocumentDB
 {
   private $host;
   private $master_key;
-  private $debug;
   private $session_token = null;
   
   /**
@@ -255,11 +262,10 @@ class DocumentDB
    * @param string $master_key Primary or Secondary key
    * @param bool   $debug      true: return Response Headers and JSON(if you need), false(default): return JSON only
    */
-  public function __construct($host, $master_key, $debug = false)
+  public function __construct($host, $master_key)
   {
     $this->host       = $host;
     $this->master_key = $master_key;
-    $this->debug      = $debug;
   }
 
   /**
@@ -333,17 +339,26 @@ class DocumentDB
     }
     try
     {
-      $response = $request->send();
+      $http_response = $request->send();
       
-      $this->session_token = $response->getHeader('x-ms-session-token');
+      $this->session_token = $http_response->getHeader('x-ms-session-token');
       
-      return $response->getBody();
+      return array(
+        'status' => $http_response->getStatus(),
+        'body'   => $http_response->getBody(),
+        'data'   => json_decode($http_response->getBody()),
+        'error'  => json_last_error()
+      );
     }
     catch (HttpException $ex)
     {
-      return $ex;
+      return array(
+        'status' => 0,
+        'body'   => '',
+        'data'   => null,
+        'error'  => $ex
+      );
     }
-
   }
 
   /**
@@ -355,22 +370,36 @@ class DocumentDB
    */
   public function selectDB($db_name)
   {
-    $rid_db = false;
-    $object = json_decode($this->listDatabases());
+    $rid_db   = false;
+    
+    $response = $this->listDatabases();
+    if($response['status'] != 200 || $response['data'] == null) return $response;
+    $object = $response['data'];
+    
     $db_list = $object->Databases;
     for ($i=0; $i<count($db_list); $i++) {
       if ($db_list[$i]->id === $db_name) {
         $rid_db = $db_list[$i]->_rid;
       }
     }
-    if (!$rid_db) {
-      $object = json_decode($this->createDatabase('{"id":"' . $db_name . '"}'));
+    
+    if (!$rid_db) {  
+      $response = $this->createDatabase('{"id":"' . $db_name . '"}');
+      if($response['status'] != 200 || $response['data'] == null) return $response; 
+      $object = $response['data'];
+
       $rid_db = $object->_rid;
     }
+    
     if ($rid_db) {
       return new DocumentDBDatabase($this, $rid_db);
     } else {
-      return false;
+      return array(
+        'status' => 0,
+        'body'   => '',
+        'data'   => null,
+        'error'  => new Exception('This should never happen')
+      );
     }
   }
 
