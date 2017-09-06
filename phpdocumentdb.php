@@ -212,7 +212,8 @@ class DocumentDB
   private $host;
   private $master_key;
   private $debug;
-
+  private $session_token = null;
+  
   /**
    * __construct
    *
@@ -279,7 +280,12 @@ class DocumentDB
   private function request($path, $method, $headers, $body = NULL)
   {
     $request = new Http_Request2($this->host . $path);
+    
+    if($this->session_token != null) 
+        $headers[] = 'x-ms-session-token: '.$this->session_token;
+    
     $request->setHeader($headers);
+    
     if ($method === "GET") {
       $request->setMethod(HTTP_Request2::METHOD_GET);
     } else if ($method === "POST") {
@@ -295,6 +301,11 @@ class DocumentDB
     try
     {
       $response = $request->send();
+      
+      $this->session_token = $response->getHeader('x-ms-session-token');
+      
+      echo 'x-ms-session-token: '.$this->session_token."\n";
+      
       return $response->getBody();
     }
     catch (HttpException $ex)
