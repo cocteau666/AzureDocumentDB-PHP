@@ -50,7 +50,6 @@ class DocumentDBDatabase
     $rid_col = false;
     
     $response = $this->document_db->listCollections($this->rid_db);
-    if($response['status'] != 200 || $response['data'] == null) return $response;
     $object = $response['data'];
     
     $col_list = $object->DocumentCollections;
@@ -61,7 +60,6 @@ class DocumentDBDatabase
     }
     if (!$rid_col) {
       $response = $this->document_db->createCollection($this->rid_db, '{"id":"' . $col_name . '"}');
-      if($response['status'] != 200 || $response['data'] == null) return $response;
       $object = $response['data'];
     
       $rid_col = $object->_rid;
@@ -252,20 +250,22 @@ class DocumentDB
 {
   private $host;
   private $master_key;
+  private $error_handler;
   private $session_token = null;
   
   /**
    * __construct
    *
    * @access public
-   * @param string $host       URI of Key
-   * @param string $master_key Primary or Secondary key
-   * @param bool   $debug      true: return Response Headers and JSON(if you need), false(default): return JSON only
+   * @param string $host            URI of Key
+   * @param string $master_key      Primary or Secondary key
+   * @param bool   $error_handler   Function to handle errors (default: null): function error_handler(array request)
    */
-  public function __construct($host, $master_key)
+  public function __construct($host, $master_key, $error_handler=null)
   {
-    $this->host       = $host;
-    $this->master_key = $master_key;
+    $this->host          = $host;
+    $this->master_key    = $master_key;
+    $this->error_handler = is_callable($error_handler) ? $error_handler : null;
   }
 
   /**
@@ -343,7 +343,7 @@ class DocumentDB
       
       $this->session_token = $http_response->getHeader('x-ms-session-token');
       
-      return array(
+      $response = array(
         'status' => $http_response->getStatus(),
         'body'   => $http_response->getBody(),
         'data'   => json_decode($http_response->getBody()),
@@ -352,13 +352,20 @@ class DocumentDB
     }
     catch (HttpException $ex)
     {
-      return array(
+      $response = array(
         'status' => 0,
         'body'   => '',
         'data'   => null,
         'error'  => $ex
       );
     }
+    
+    if(($response['status'] < 200 || $response['status'] >= 300) && $this->error_handler)
+    {
+        $response = ($this->error_handler)($response);
+    }
+    
+    return $response;
   }
 
   /**
@@ -373,7 +380,6 @@ class DocumentDB
     $rid_db   = false;
     
     $response = $this->listDatabases();
-    if($response['status'] != 200 || $response['data'] == null) return $response;
     $object = $response['data'];
     
     $db_list = $object->Databases;
@@ -385,7 +391,6 @@ class DocumentDB
     
     if (!$rid_db) {  
       $response = $this->createDatabase('{"id":"' . $db_name . '"}');
-      if($response['status'] != 200 || $response['data'] == null) return $response; 
       $object = $response['data'];
 
       $rid_db = $object->_rid;

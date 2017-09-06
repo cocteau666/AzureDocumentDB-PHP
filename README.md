@@ -46,7 +46,11 @@ Sample
     $master_key = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx=';
     
     // connect DocumentDB
-    $documentdb = new DocumentDB($host, $master_key);
+    $documentdb = new DocumentDB($host, $master_key, function($request)
+    {
+        echo 'Database Error('.$request['status'].'): '.$request['body']."\n";
+        exit;
+    });
     
     // select Database or create
     $db = Util::db_selectDB("db_test");
