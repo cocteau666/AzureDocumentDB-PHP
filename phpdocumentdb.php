@@ -360,10 +360,8 @@ class DocumentDB
       );
     }
     
-    if(($response['status'] < 200 || $response['status'] >= 300) && $this->error_handler)
-    {
+    if(($response['status'] < 200 || $response['status'] >= 400) && $this->error_handler) 
         $response = ($this->error_handler)($response);
-    }
     
     return $response;
   }
