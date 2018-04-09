@@ -265,7 +265,7 @@ class DocumentDB
                       $resource_id . "\n" .
                       $x_ms_date . "\n" .
                       "\n";
-echo $string_to_sign;
+
 
     $sig = base64_encode(hash_hmac('sha256', strtolower($string_to_sign), $key, true));
 
@@ -310,7 +310,7 @@ echo $string_to_sign;
     try
     {
       $response = $request->send();
-var_dump($response);
+
       return $response->getBody();
     }
     catch (HttpException $ex)
