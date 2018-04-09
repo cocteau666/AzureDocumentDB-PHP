@@ -22,7 +22,7 @@
  * Wrapper class of Document DB REST API
  *
  * @link http://msdn.microsoft.com/en-us/library/azure/dn781481.aspx
- * @version 2.7
+ * @version 2.8
  * @author Takeshi SAKURAI <sakurai@pnop.co.jp>
  * @since PHP 5.3
  */
@@ -37,6 +37,7 @@ class DocumentDBDatabase
   {
     $this->document_db = $document_db;
     $this->rid_db      = $rid_db;
+    $this->rid_db      = "db_test";
   }
 
   /**
@@ -110,6 +111,19 @@ class DocumentDBCollection
   public function createDocument($json)
   {
     return $this->document_db->createDocument($this->rid_db, $this->rid_col, $json);
+  }
+
+  /**
+   * replaceDocument
+   *
+   * @access public
+   * @param  string $rid document ResourceID (_rid)
+   * @param string $json JSON formatted document
+   * @return string JSON strings
+   */
+  public function replaceDocument($rid, $json)
+  {
+    return $this->document_db->replaceDocument($this->rid_db, $this->rid_col, $rid, $json);
   }
 
   /**
@@ -251,6 +265,7 @@ class DocumentDB
                       $resource_id . "\n" .
                       $x_ms_date . "\n" .
                       "\n";
+echo $string_to_sign;
 
     $sig = base64_encode(hash_hmac('sha256', strtolower($string_to_sign), $key, true));
 
@@ -295,6 +310,7 @@ class DocumentDB
     try
     {
       $response = $request->send();
+var_dump($response);
       return $response->getBody();
     }
     catch (HttpException $ex)
@@ -530,7 +546,7 @@ class DocumentDB
    */
   public function listCollections($rid_id)
   {
-    $headers = $this->getAuthHeaders('GET', 'colls', $rid_id);
+    $headers = $this->getAuthHeaders('GET', 'colls', "dbs/" . $rid_id);
     $headers[] = 'Content-Length:0';
     return $this->request("/dbs/" . $rid_id . "/colls", "GET", $headers);
   }
@@ -546,7 +562,7 @@ class DocumentDB
    */
   public function getCollection($rid_id, $rid_col)
   {
-    $headers = $this->getAuthHeaders('GET', 'colls', $rid_col);
+    $headers = $this->getAuthHeaders('GET', 'colls', "dbs/" . $rid_col);
     $headers[] = 'Content-Length:0';
     return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col, "GET", $headers);
   }
@@ -562,7 +578,7 @@ class DocumentDB
    */
   public function createCollection($rid_id, $json)
   {
-    $headers = $this->getAuthHeaders('POST', 'colls', $rid_id);
+    $headers = $this->getAuthHeaders('POST', 'colls', "dbs/" . $rid_id);
     $headers[] = 'Content-Length:' . strlen($json);
     return $this->request("/dbs/" . $rid_id . "/colls", "POST", $headers, $json);
   }
@@ -578,7 +594,7 @@ class DocumentDB
    */
   public function deleteCollection($rid_id, $rid_col)
   {
-    $headers = $this->getAuthHeaders('DELETE', 'colls', $rid_col);
+    $headers = $this->getAuthHeaders('DELETE', 'colls', "dbs/" . $rid_col);
     $headers[] = 'Content-Length:0';
     return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col, "DELETE", $headers);
   }
