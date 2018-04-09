@@ -7,6 +7,7 @@ Pear HTTP_Request2 module needed.
 
 New
 ===================
+- Add "replaceDocument" method (2.8)
 - Add "Trigger" support (2.7)
 - Add "User Defined Function" support (2.6)
 - Add "Stored Procedure" support (2.5)
@@ -69,6 +70,11 @@ Sample
     $json = $col->query("SELECT col_test._rid FROM col_test");
     $object = json_decode($json);
     var_dump($object->Documents);
+
+    // replace document (specify document _rid when created)
+    $rid = "In4LANe-bbAAAAAAAAAAAA==";
+    $newData = '{"id":"1234567890", "FirstName": "Jane","LastName": "Doe"}';
+    echo $col->replaceDocument($rid,$newData);
 
     // delete document (specify document _rid when created)
     $rid = "In4LANe-bbAAAAAAAAAAAA==";
