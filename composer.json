@@ -1,0 +1,26 @@
+{
+  "name"       : "cocteau666/AzureDocumentDB-PHP",
+  "description": "azure cosmosdb for PHP",
+  "keywords"   : ["azure cosmosdb", "cosmosdb", "documentdb"],
+  "homepage"   : "https://github.com/cocteau666/AzureDocumentDB-PHP",
+  "authors"    : [
+  ],
+  "support" : {
+    "source" : "https://github.com/cocteau666/AzureDocumentDB-PHP",
+    "issues" : "https://github.com/cocteau666/AzureDocumentDB-PHP/issues"
+  },
+  "require" : {
+    "php" : ">=5.6",
+    "pear/http_request2": "2.3.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Cocteau666\\CosmosDb\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+
+    }
+  }
+}
