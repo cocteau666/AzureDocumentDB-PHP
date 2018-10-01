@@ -1,6 +1,6 @@
 <?php
 
-namespace Cocteau666\CosmosDb;
+namespace Jupitern\CosmosDb;
 
 /*
  * Copyright (C) 2014 - 2017 Takeshi SAKURAI <sakurai@pnop.co.jp>
@@ -186,7 +186,7 @@ class CosmosDb
     {
         $headers = $this->getAuthHeaders('POST', 'docs', $rid_col);
         $headers[] = 'Content-Length:' . strlen($query);
-        $headers[] = 'Content-Type:application/sql';
+        $headers[] = 'Content-Type:application/query+json';
         $headers[] = 'x-ms-max-item-count:-1';
         $headers[] = 'x-ms-documentdb-isquery:True';
         return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs", "POST", $headers, $query);

@@ -1,6 +1,6 @@
 <?php
 
-namespace Cocteau666\CosmosDb;
+namespace Jupitern\CosmosDb;
 
 /*
  * Copyright (C) 2014 - 2017 Takeshi SAKURAI <sakurai@pnop.co.jp>
