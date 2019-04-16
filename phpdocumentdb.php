@@ -381,6 +381,7 @@ class DocumentDB
     $headers[] = 'Content-Type:application/sql';
     $headers[] = 'x-ms-max-item-count:-1';
     $headers[] = 'x-ms-documentdb-isquery:True';
+    $headers[] = 'x-ms-documentdb-query-enablecrosspartition:True';
     return $this->request("/dbs/" . $rid_id . "/colls/" . $rid_col . "/docs", "POST", $headers, $query);
   }
 
